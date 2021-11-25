@@ -18,6 +18,9 @@ public final class ListenersManager {
             //enchantments
             new AimingListener(),
             new TelekinesisListener(),
+
+            // Commands listener
+            new CraftCommandListener(),
         };
 
         for (Listener listener: listeners) {

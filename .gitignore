@@ -116,3 +116,4 @@ server/
 .settings/
 .classpath
 .project
+.vscode/
