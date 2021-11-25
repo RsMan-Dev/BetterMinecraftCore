@@ -1,0 +1,24 @@
+recipes:
+  testSwordRecipe:
+    shaped:
+      a:
+        shape:
+          - m.DIAMOND 9 | m.AIR | m.AIR
+          - m.DIAMOND 9 | m.AIR | m.AIR
+          - m.STICK 1 | m.AIR | m.AIR
+        result: testSword 1
+    shapeless:
+      a:
+        ingredients:
+          - m.DIAMOND 16
+          - m.DIAMOND_SWORD 1
+        result: testSword 1
+  compressedLapisRecipe:
+    shapeless:
+      a:
+        ingredients:
+          - m.LAPIS_LAZULI 32
+          - m.LAPIS_LAZULI 32
+          - m.LAPIS_LAZULI 32
+          - m.LAPIS_LAZULI 32
+        result: compressedLapis 1

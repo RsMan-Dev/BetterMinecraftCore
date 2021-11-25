@@ -1,0 +1,67 @@
+bmc:
+  command:
+    description:
+      reload: Reload all plugin data and configurations
+      craft:
+        self: All craft commands
+        set_shaped: Use to define shaped craft for item in hand
+        set_shapeless: Use to define shaped craft for item in hand
+      item:
+        attribute:
+          set: Use to add attribute to item in hand
+          remove: Use to remove attribute to item in hand
+        enchantment:
+          set: Use to add enchantment to item in hand
+          remove: Use to remove enchantment to item in hand
+        name:
+          set: Use to set display name of item in hand
+        material_data:
+          set: Use to set material data of item in hand
+        rev:
+          set: Use to set revision of item in hand
+        give:
+          self: Use to get saved item with key
+          other: Use to give saved item to other player with key
+        save: Save item in hand on given key
+        delete: Delete item from confg with given key
+        log: Log all item data
+        set_lore: Set item lore line
+        add_lore: Add item lore line
+        set_unbreakable: Set item unbreakable or not
+      player:
+        attribute:
+          get: Get player attribute by attribute name
+          set: Set player base attribute by attribute name
+    result:
+      bmc_help: Better Minecraft Core Help
+      too_few_arguments: Too Few Arguments
+      incorrect_value: Incorrect value "{val}"
+      incorrect_number: Incorrect number "{val}"
+      incorrect_name: Incorrect name "{val}"
+      incorrect_attr: Incorrect attribute "{val}"
+      incorrect_enchant: Incorrect enchantment "{val}"
+      coming_soon_conf_possible: This feature is coming soon, you can use config to make this action
+      coming_soon: This feature is coming soon, wait for future updates of the plugin, or join the discord to talk with the developpers
+      need_hold_item: You need to hold an item to perform this command.
+      inventory_full: Your inventory is full
+
+      item_attribute_set: Attribute {attr} set to {val} on item
+      item_attribute_remove: Attribute {attr} removed from item
+      item_enchantment_set: Enchantment {ench} set to level {level} on item
+      item_enchantment_remove: Enchantment {ench} removed from item
+      item_name_set: Item display name set to {name}
+      item_material_data_set: Item material data set to {id}
+      item_rev_set: Item revision set to {id}
+      item_given: Given {item} x{number} to {player}
+      item_saved: Saved {item} to config
+      item_never_saved: Item never saved, please, specify key to save it
+      item_deleted: Deleted {item} from config
+      item_lore_set: Set lore line {line} to {text}
+      item_unbreakable_set: Set item unbreakable state to {state}
+
+      player_attribute: the {attr} Attribute of {player} has for value "{val}"
+      player_base_attribute_set: the base {attr} Attribute of {player} set to "{val}"
+
+      invalid_name_key_pair: the name/key pair is invalid, type it in this format "name.key"
+
+
