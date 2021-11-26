@@ -38,6 +38,8 @@ public class CraftCommandListener implements Listener {
     String name = nameKeyPairArr[0];
     String key = nameKeyPairArr[1];
     String result = splittedData[1];
+    int resultCount = Integer.parseInt(splittedData[2]);
+    boolean isShaped = splittedData[3].equals("shaped");
 
     Inventory inv = event.getInventory();
     if (inv.getType() != InventoryType.DISPENSER) return;

@@ -39,7 +39,6 @@ public class CraftCommands extends BaseCommand {
     @Syntax("<name.key> <result> <resultCount> [force]")
     public void onSetShaped(Player playerSender, String nameKeyPair, String result, Integer resultCount, @Optional String force) {
         CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
-        issuerSender.sendInfo(MessageKeys.COMING_SOON_CONF_POSSIBLE);
         String[] nameKeyPairDettached = nameKeyPair.split("\\.");
         if (nameKeyPairDettached.length != 2) { issuerSender.sendInfo(MessageKeys.INVALID_NAME_KEY_PAIR);return;}
 
