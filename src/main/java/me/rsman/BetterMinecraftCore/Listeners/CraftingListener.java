@@ -69,9 +69,8 @@ public class CraftingListener implements Listener {
                     || e.getClickedInventory().getClass().getName().endsWith("CraftInventoryPlayer");
             if(isCraftInventory || e.isShiftClick()){
                 if(isCraftInventory && e.getSlot() == 0){return;}
-                BetterMinecraftCore.getInstance().getServer().getScheduler().runTaskLater(BetterMinecraftCore.getInstance(),() -> {
-                    inv.setMatrix(inv.getMatrix());
-                },1);
+                BetterMinecraftCore.getInstance().getServer().getScheduler().runTaskLater(BetterMinecraftCore.getInstance(),
+                        () -> inv.setMatrix(inv.getMatrix()),1);
             }
         }
     }
@@ -100,7 +99,7 @@ public class CraftingListener implements Listener {
 
 
         e.setCancelled(true);
-        int maxItemsPossible = 64;
+        int maxItemsPossible = result.getMaxStackSize() / result.getAmount();
         int i=0;
         for (ItemStack item: ingredientMatrix) {
             if(newMatrix[i] != null && item != null){
@@ -113,16 +112,19 @@ public class CraftingListener implements Listener {
 
 
         if(!e.isShiftClick()){
-            if( maxItemsPossible >=1 ) maxItemsPossible = 1;
+            if( maxItemsPossible >=1 ) maxItemsPossible = result.getAmount();
             result.setAmount(maxItemsPossible);
             if(p.getItemOnCursor().getType() != Material.AIR) {
-                if(!p.getItemOnCursor().getItemMeta().equals(result.getItemMeta()))return;
+                if(p.getItemOnCursor().hasItemMeta() && result.hasItemMeta()){
+                    if(!Objects.equals(p.getItemOnCursor().getItemMeta(), result.getItemMeta()))return;
+                }
+                if(p.getItemOnCursor().getAmount() + maxItemsPossible > p.getItemOnCursor().getMaxStackSize()) return;
                 p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() + maxItemsPossible);
             } else {
                 p.setItemOnCursor(result);
             }
         } else {
-            result.setAmount(maxItemsPossible);
+            result.setAmount(maxItemsPossible * result.getAmount());
             Map<Integer, ItemStack> notadded = pinv.addItem(result);
             if(!notadded.isEmpty()){
                 maxItemsPossible -= notadded.get(0).getAmount();

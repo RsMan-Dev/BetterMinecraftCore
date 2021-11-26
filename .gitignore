@@ -117,3 +117,4 @@ server/
 .classpath
 .project
 .vscode/
+start.ps1

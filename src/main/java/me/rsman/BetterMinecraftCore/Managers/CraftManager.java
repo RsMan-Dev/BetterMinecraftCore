@@ -35,8 +35,14 @@ public final class CraftManager {
                         BetterMinecraftCore.getInstance().getLogger().info("skipping shaped recipe "+name+" "+c+", result is invalid or not registered");
                         return;
                     }
-
-                    ShapedRecipe rec = new ShapedRecipe(NamespacedKey.minecraft("bmc_shaped_"+name.toLowerCase()+"_"+c),resultItemFromScheme.getValue().getItemStack());
+                    ShapedRecipe rec;
+                    if(resultItemFromScheme.getValue() instanceof RecipeChoice.ExactChoice){
+                        rec = new ShapedRecipe(NamespacedKey.minecraft("bmc_shaped_"+name.toLowerCase()+"_"+c),((RecipeChoice.ExactChoice)resultItemFromScheme.getValue()).getItemStack());
+                    } else if (resultItemFromScheme.getValue() instanceof RecipeChoice.MaterialChoice){
+                        rec = new ShapedRecipe(NamespacedKey.minecraft("bmc_shaped_"+name.toLowerCase()+"_"+c),((RecipeChoice.MaterialChoice)resultItemFromScheme.getValue()).getItemStack());
+                    } else {
+                        rec = new ShapedRecipe(NamespacedKey.minecraft("bmc_shaped_"+name.toLowerCase()+"_"+c),((RecipeChoice.ExactChoice)resultItemFromScheme.getValue()).getItemStack());
+                    }
                     assert itemsShapes != null;
                     for (int i = 0; i < itemsShapes.toArray().length; i++){
                         String[] itemSchemes = itemsShapes.get(i).split("\\|");
@@ -75,8 +81,14 @@ public final class CraftManager {
                         BetterMinecraftCore.getInstance().getLogger().info("skipping shapeless recipe "+name+" "+c+", result is invalid or not registered");
                         return;
                     }
-
-                    ShapelessRecipe rec = new ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_"+name.toLowerCase()+"_"+c),resultItemFromScheme.getValue().getItemStack());
+                    ShapelessRecipe rec;
+                    if(resultItemFromScheme.getValue() instanceof RecipeChoice.ExactChoice){
+                        rec = new ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_"+name.toLowerCase()+"_"+c),((RecipeChoice.ExactChoice)resultItemFromScheme.getValue()).getItemStack());
+                    } else if (resultItemFromScheme.getValue() instanceof RecipeChoice.MaterialChoice){
+                        rec = new ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_"+name.toLowerCase()+"_"+c),((RecipeChoice.MaterialChoice)resultItemFromScheme.getValue()).getItemStack());
+                    } else {
+                        rec = new ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_"+name.toLowerCase()+"_"+c),((RecipeChoice.ExactChoice)resultItemFromScheme.getValue()).getItemStack());
+                    }
                     assert itemSchemes != null;
                     for (int i = 0; i < itemSchemes.toArray().length; i++){
                         Map.Entry<Character, RecipeChoice> itemFromScheme = convertSchemeToItem(itemSchemes.get(i), 'X');
@@ -104,7 +116,8 @@ public final class CraftManager {
         if(item.equals("m.AIR") || item.equals("AIR") || item.equals("null")){
             out = new AbstractMap.SimpleEntry<>(' ', null);
         } else if(item.startsWith("m.")){
-            out = new AbstractMap.SimpleEntry<>(character, new RecipeChoice.ExactChoice(new ItemStack(Material.valueOf(item.substring(2)), number)));
+            if(Material.matchMaterial(item.substring(2)) == null) return null;
+            out = new AbstractMap.SimpleEntry<>(character, new RecipeChoice.ExactChoice(new ItemStack(Objects.requireNonNull(Material.matchMaterial(item.substring(2))), number)));
         }  else if(item.startsWith("all.")){
             boolean added = false;
             Tag<Material> tag =  Bukkit.getTag("blocks", NamespacedKey.minecraft(item.substring(4).toLowerCase()), Material.class);
@@ -132,19 +145,18 @@ public final class CraftManager {
 
     public static ItemStack[] convertIngredientMapToMatrix(ItemStack[] model, Map<Character, ItemStack> ingredients){
         ItemStack[] returned = new ItemStack[model.length];
-        Map<Character, ItemStack> ingredientsModified = ingredients;
-        ingredientsModified.values().removeAll(Collections.singleton(null));
+        ingredients.values().removeAll(Collections.singleton(null));
         int i=0;
         for (ItemStack item: model) {
             if(item==null){
                 returned[i] = null;
             } else {
-                Optional<Map.Entry<Character, ItemStack>> optionnal = ingredientsModified.entrySet().stream().findFirst();
+                Optional<Map.Entry<Character, ItemStack>> optionnal = ingredients.entrySet().stream().findFirst();
                 if(!optionnal.isPresent()){
                     returned[i] = null;
                 }else{
                     Map.Entry<Character, ItemStack> itemFound = optionnal.get();
-                    ingredientsModified.remove(itemFound.getKey());
+                    ingredients.remove(itemFound.getKey());
                     returned[i] = itemFound.getValue();
                 }
             }

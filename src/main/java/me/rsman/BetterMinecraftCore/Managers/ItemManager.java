@@ -3,10 +3,14 @@ package me.rsman.BetterMinecraftCore.Managers;
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
 import me.rsman.BetterMinecraftCore.utils.NBT;
 import me.rsman.BetterMinecraftCore.utils.RomanNumber;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -56,7 +60,7 @@ public final class ItemManager {
         return value;
     }
     public static Integer getItemEnchantAttr(ItemStack item, String attr){
-        Integer value = 0;
+        int value = 0;
         for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
             if(EnchantManager.isCustom(enchant.getKey())){
                 Map<String, Integer> modifiers = EnchantManager.enchantsAttributesModifiers.get(enchant.getKey().getKey().toString());
@@ -117,7 +121,7 @@ public final class ItemManager {
     }
     public static List<String> getCustomLoreAll(ItemStack item){
         String lore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
-        if(lore == null) return new ArrayList<String>();
+        if(lore == null) return new ArrayList<>();
         return Arrays.asList(lore.split("\\|"));
     }
     public static void updateItemLore(ItemStack item){
@@ -138,7 +142,7 @@ public final class ItemManager {
         }
 
         boolean first = true;
-        String line = "§7";
+        StringBuilder line = new StringBuilder("§7");
         for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
             if(enchant.getValue() <= 0)continue;
             if(first){ first = false; lore.add(""); }
@@ -147,15 +151,15 @@ public final class ItemManager {
                     + " " + RomanNumber.toRoman(enchant.getValue());
 
             if((line + enchantName).length() < 30){
-                if(!line.equals("§7")) line += ", ";
-                line += enchantName;
+                if(!line.toString().equals("§7")) line.append(", ");
+                line.append(enchantName);
             } else {
                 lore.add(line + ",");
-                line = "§7"+enchantName;
+                line = new StringBuilder("§7" + enchantName);
             }
         }
-        if(!line.equals("§7")){
-            lore.add(line);
+        if(!line.toString().equals("§7")){
+            lore.add(line.toString());
         }
 
         String CustomLore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
@@ -311,5 +315,20 @@ public final class ItemManager {
         }
         setCustomLoreAll(item, getCustomLoreAll(itemInConf), true);
         updateItemLore(item);
+    }
+
+    public static ItemStack convertItemSchemeToItemStack(String item){
+        if(item.equals("m.AIR") || item.equals("AIR") || item.equals("null")){
+            return null;
+        } else if(item.startsWith("m.")){
+            if(Material.matchMaterial(item.substring(2)) == null) return null;
+            return new ItemStack(Objects.requireNonNull(Material.matchMaterial(item.substring(2))));
+        } else {
+            if(ItemManager.registeredItems.containsKey(item)){
+                return ItemManager.registeredItems.get(item).clone();
+            } else {
+                return null;
+            }
+        }
     }
 }
