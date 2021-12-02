@@ -1,7 +1,7 @@
 package me.rsman.BetterMinecraftCore.Managers;
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
-import me.rsman.BetterMinecraftCore.Entities.PlayerBaseAttr;
+import me.rsman.BetterMinecraftCore.db.models.PlayerBaseAttr;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;

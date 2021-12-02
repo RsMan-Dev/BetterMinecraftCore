@@ -5,7 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.db.MysqlDatabaseType;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import me.rsman.BetterMinecraftCore.Entities.PlayerBaseAttr;
+import me.rsman.BetterMinecraftCore.db.models.PlayerBaseAttr;
 
 import java.sql.SQLException;
 

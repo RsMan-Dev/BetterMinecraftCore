@@ -31,6 +31,7 @@ public enum MessageKeys implements MessageKeyProvider {
     ITEM_DELETED,
     ITEM_LORE_SET,
     ITEM_UNBREAKABLE_SET,
+    ITEM_RENAMABLE_SET,
 
     //player
     PLAYER_BASE_ATTRIBUTE_SET,

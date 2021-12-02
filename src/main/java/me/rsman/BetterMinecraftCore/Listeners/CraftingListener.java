@@ -112,14 +112,13 @@ public class CraftingListener implements Listener {
 
 
         if(!e.isShiftClick()){
-            if( maxItemsPossible >=1 ) maxItemsPossible = result.getAmount();
-            result.setAmount(maxItemsPossible);
+            if( maxItemsPossible >=1 ) maxItemsPossible = 1;
             if(p.getItemOnCursor().getType() != Material.AIR) {
                 if(p.getItemOnCursor().hasItemMeta() && result.hasItemMeta()){
                     if(!Objects.equals(p.getItemOnCursor().getItemMeta(), result.getItemMeta()))return;
                 }
                 if(p.getItemOnCursor().getAmount() + maxItemsPossible > p.getItemOnCursor().getMaxStackSize()) return;
-                p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() + maxItemsPossible);
+                p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() + maxItemsPossible * result.getAmount());
             } else {
                 p.setItemOnCursor(result);
             }

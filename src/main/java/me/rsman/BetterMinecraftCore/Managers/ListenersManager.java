@@ -14,6 +14,7 @@ public final class ListenersManager {
             new BlockListener(),
             new CraftingListener(),
             new EnchantListener(),
+            new AnvilListener(),
 
             //enchantments
             new AimingListener(),

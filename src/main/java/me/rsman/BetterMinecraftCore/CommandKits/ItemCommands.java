@@ -171,7 +171,7 @@ public class ItemCommands extends BaseCommand {
     @CommandPermission("hc.item.give.other")
     @Description("{@@bmc.command.description.item.give.other}")
     @Syntax("<item_key> <player> [amount]")
-    public void onGive(@Optional Player playerSender, @Values("@item") String itemName, @Values("@players") OnlinePlayer player, @Optional Integer number){
+    public void onGive(@Optional Player playerSender, @Values("@item") String itemName, OnlinePlayer player, @Optional Integer number){
         CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
         if(!ItemManager.registeredItems.containsKey(itemName)){
             issuerSender.sendInfo(MessageKeys.INCORRECT_NAME, "{val}", itemName);
@@ -278,6 +278,20 @@ public class ItemCommands extends BaseCommand {
         ItemManager.setUnbreakable(item,state);
         ItemManager.updateItemLore(item);
         issuerSender.sendInfo(MessageKeys.ITEM_UNBREAKABLE_SET, "{state}", state+"");
+    }
+    @Subcommand("setRenamable")
+    @CommandCompletion("<true/false> @nothing")
+    @CommandPermission("hc.item.set_renamable")
+    @Description("{@@bmc.command.description.item.set_renamable}")
+    @Syntax("<true/false>")
+    public void onSetRenamable(Player playerSender, Boolean state){
+        CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
+        ItemStack item = Objects.requireNonNull(playerSender.getEquipment()).getItemInMainHand();
+        if(item.getType() == Material.AIR || item.getItemMeta() == null){
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM);return;
+        }
+        ItemManager.setRenamable(item,state);
+        issuerSender.sendInfo(MessageKeys.ITEM_RENAMABLE_SET, "{state}", state+"");
     }
     @Subcommand("log")
     @CommandCompletion("@nothing")

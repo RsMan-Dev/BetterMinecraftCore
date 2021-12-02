@@ -50,6 +50,13 @@ public final class ItemManager {
         item.setItemMeta(meta);
         updateItemLore(item);
     }
+    public static void setRenamable(ItemStack item, boolean val){
+        NBT.set(item,"renamable", PersistentDataType.BYTE, (byte)(val? 1: 0));
+    }
+    public static boolean isRenamable(ItemStack item, boolean val){
+        Byte renamable = (Byte)NBT.get(item,"renamable", PersistentDataType.BYTE);
+        return (renamable == null || renamable == 1);
+    }
     public static void setItemAttr(ItemStack item, String stat, int value){
         NBT.set(item, "attributes/"+stat, PersistentDataType.INTEGER, value);
         updateItemLore(item);
@@ -218,6 +225,11 @@ public final class ItemManager {
                         case "unbreakable":
                             itemTRMeta[0].setUnbreakable(((Integer)ConfigManager.getKey("items/all","items."+name+".unbreakable", "Int", "")) != 0);
                             break;
+                        case "renamable":
+                            itemTR.setItemMeta(itemTRMeta[0]);
+                            setRenamable(itemTR, (Boolean)ConfigManager.getKey("items/all", "items." + name + ".renamable", "Boolean", true));
+                            itemTRMeta[0] = itemTR.getItemMeta();
+                            break;
                         case "attributes":
                             itemTR.setItemMeta(itemTRMeta[0]);
                             ConfigManager.getKeys("items/all", "items."+name+".attributes").forEach(attribute->{
@@ -271,6 +283,10 @@ public final class ItemManager {
             String CustomLore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
             if(CustomLore != null){
                 ConfigManager.setKey("items/all", "items."+name+".lore", Arrays.asList(CustomLore.split("\\|")));
+            }
+            Byte isRenamable = (Byte) NBT.get(item, "renamable", PersistentDataType.BYTE);
+            if(isRenamable != null){
+                ConfigManager.setKey("items/all", "items."+name+".renamable", isRenamable == 1);
             }
             boolean first = true;
             for (String attr : ItemManager.allowedAttrs) {

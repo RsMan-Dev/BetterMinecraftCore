@@ -1,4 +1,4 @@
-package me.rsman.BetterMinecraftCore.Entities;
+package me.rsman.BetterMinecraftCore.db.models;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
