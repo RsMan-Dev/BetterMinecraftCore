@@ -3,6 +3,7 @@ package me.rsman.BetterMinecraftCore;
 import me.rsman.BetterMinecraftCore.Managers.*;
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandCompletionsManager;
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager;
+import me.rsman.BetterMinecraftCore.configs.ConfigLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +28,7 @@ public final class BetterMinecraftCore extends JavaPlugin {
         CraftManager.initCrafts();
         CommandManager.init();
         CommandCompletionsManager.init();
+        ConfigLoader.testSnakeYaml();
 
         getServer().getOnlinePlayers().forEach((player) -> {
             PlayerManager.getBaseAttributes(player.getUniqueId().toString(), true);
