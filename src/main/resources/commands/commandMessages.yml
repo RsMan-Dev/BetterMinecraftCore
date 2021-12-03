@@ -28,6 +28,7 @@ bmc:
         set_lore: Set item lore line
         add_lore: Add item lore line
         set_unbreakable: Set item unbreakable or not
+        set_renamable: Set item renamable or not in anvil
       player:
         attribute:
           get: Get player attribute by attribute name
@@ -58,6 +59,7 @@ bmc:
       item_deleted: Deleted {item} from config
       item_lore_set: Set lore line {line} to {text}
       item_unbreakable_set: Set item unbreakable state to {state}
+      item_renamable_set: Set item renamable state to {state}
 
       player_attribute: the {attr} Attribute of {player} has for value "{val}"
       player_base_attribute_set: the base {attr} Attribute of {player} set to "{val}"

@@ -9,6 +9,8 @@ import org.bukkit.inventory.*;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class CraftManager {
     public static Map<String, Map<String, List<String>>> registeredCrafts = new HashMap<>();

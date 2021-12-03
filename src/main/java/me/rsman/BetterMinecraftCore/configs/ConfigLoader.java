@@ -37,16 +37,9 @@ public class ConfigLoader {
         }
     }
 
-    public static void testSnakeYaml() {
-        try {
-            BetterMinecraftCore.getInstance().getLogger().warning("Test yaml loader start");
-            BmcItemContainer config = loadConfig("items/all.yml", BmcItemContainer.class);
-            for (Map.Entry<String, BmcItem> entry : config.getItems().entrySet()) {
-                BetterMinecraftCore.getInstance().getLogger().warning(entry.getKey() + " : " + entry.getValue());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void init() {
+        //                               ITEMS INIT
+        BmcItemContainer.load();
     }
 
 }

@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public final class CommandManager extends PaperCommandManager {
     public static CommandManager instance;

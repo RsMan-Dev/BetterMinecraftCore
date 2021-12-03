@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BmcItem {
+    private String name;
     private String displayName;
     private int materialId;
     private String material;
@@ -12,8 +13,17 @@ public class BmcItem {
     private HashMap<String, Integer> enchants;
     private boolean unbreakable;
     private boolean renamable;
+    private int rev;
 
     public BmcItem() {}
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -77,6 +87,14 @@ public class BmcItem {
 
     public void setRenamable(boolean renamable) {
         this.renamable = renamable;
+    }
+
+    public int getRev() {
+        return rev;
+    }
+
+    public void setRev(int rev) {
+        this.rev = rev;
     }
 
     @Override
