@@ -15,20 +15,18 @@ public final class BetterMinecraftCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Logger pluginLogging = Logger.getLogger(this.getName());
         instance = this;
-        Logger pluginLogging = Logger.getLogger(instance.getName());
-        // Plugin startup logic
+
         getLogger().info("§aStarting");
 
-        if(!DBManager.initConnection()){
-            getLogger().warning("Database connection not initialized, please setup config for mariaDB database, disabling plugin");
-            getServer().getPluginManager().disablePlugin(this);
-        }
+        ConfigLoader.init();
+
+        DBManager.initConnection();
 
         TasksManager.registerAllTasks();
         ListenersManager.registerAllEvents();
         EnchantManager.registerAllEnchantments();
-        ItemManager.registerAllItemsWithConfig();
         CraftManager.initCrafts();
 
         pluginLogging.setLevel(Level.SEVERE);
@@ -36,7 +34,6 @@ public final class BetterMinecraftCore extends JavaPlugin {
         CommandCompletionsManager.init();
         pluginLogging.setLevel(Level.INFO);
 
-        ConfigLoader.init();
 
         getServer().getOnlinePlayers().forEach((player) -> {
             PlayerManager.getBaseAttributes(player.getUniqueId().toString(), true);

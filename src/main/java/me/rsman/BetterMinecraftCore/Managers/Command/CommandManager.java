@@ -8,13 +8,13 @@ import me.rsman.BetterMinecraftCore.CommandKits.ItemCommands;
 import me.rsman.BetterMinecraftCore.CommandKits.PlayerCommands;
 import me.rsman.BetterMinecraftCore.CommandKits.RootCommands;
 import me.rsman.BetterMinecraftCore.Managers.ConfigManager;
+import me.rsman.BetterMinecraftCore.configs.ConfigLoader;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 public final class CommandManager extends PaperCommandManager {
     public static CommandManager instance;
@@ -27,7 +27,7 @@ public final class CommandManager extends PaperCommandManager {
         this.setFormat(MessageType.HELP, ChatColor.AQUA, ChatColor.BLUE, ChatColor.GRAY);
         this.setFormat(MessageType.ERROR, ChatColor.RED, ChatColor.YELLOW);
         try {
-            this.getLocales().loadYamlLanguageFile("commands/commandMessages.yml", Locale.ENGLISH);
+            this.getLocales().loadYamlLanguageFile(ConfigLoader.getFile("lang/command"), Locale.ENGLISH);
         } catch (IOException | InvalidConfigurationException e) {
             plugin.getLogger().severe("Failed to load ACF core language file");
             e.printStackTrace();

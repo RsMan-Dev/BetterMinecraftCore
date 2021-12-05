@@ -1,0 +1,12 @@
+#ATTRIBUTES TRANSLATES (color codes are allowed)
+translations:
+  damage: Damage
+  strength: Strength
+  intelligence: Intelligence
+  critChance: Crit chance
+  critDamage: Crit damage
+  defense: Defense
+  health: Health
+  attackSpeed: Attack Speed
+  mana: Mana
+  speed: Speed

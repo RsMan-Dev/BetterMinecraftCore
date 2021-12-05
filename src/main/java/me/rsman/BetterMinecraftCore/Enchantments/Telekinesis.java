@@ -6,8 +6,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Telekinesis extends CustomEnchantClass {
     private static Telekinesis instance;
+
+    private static final Map<String, Long> attributeModifiers = null;
 
     public Telekinesis() {
         super(NamespacedKey.minecraft("bmc_telekinesis"));
@@ -64,5 +69,15 @@ public class Telekinesis extends CustomEnchantClass {
     @Override
     public int getMinimumLevel() {
         return 20;
+    }
+
+    @Override
+    public boolean hasAttributesModifiers() {
+        return false;
+    }
+
+    @Override
+    public Map<String, Long> getAttributesModifiers() {
+        return Telekinesis.attributeModifiers;
     }
 }

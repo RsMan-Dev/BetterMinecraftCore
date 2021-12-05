@@ -5,6 +5,9 @@ import co.aikar.commands.CommandCompletions;
 import me.rsman.BetterMinecraftCore.Managers.CraftManager;
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemManager;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
+import me.rsman.BetterMinecraftCore.enums.EAttributes;
+import me.rsman.BetterMinecraftCore.enums.EEnchants;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class CommandCompletionsManager {
 
@@ -25,7 +29,7 @@ public final class CommandCompletionsManager {
         commandCompletions.registerAsyncCompletion("item", c -> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                Set<String> itemList = ItemManager.registeredItems.keySet();
+                Set<String> itemList = BmcItemContainer.getInstance().getItems().keySet();
                 return new ArrayList<>(itemList);
             }
             return null;
@@ -33,14 +37,14 @@ public final class CommandCompletionsManager {
         commandCompletions.registerAsyncCompletion("attribute", c -> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                return new ArrayList<>(Arrays.asList(ItemManager.allowedAttrs));
+                return EAttributes.getAllKeys();
             }
             return null;
         });
         commandCompletions.registerAsyncCompletion("enchantment", c -> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                return new ArrayList<>(EnchantManager.enchants.keySet());
+                return EEnchants.getNonReplacedEnumKeys();
             }
             return null;
         });
@@ -50,9 +54,7 @@ public final class CommandCompletionsManager {
                 List<String> crafts = new ArrayList<>();
                 CraftManager.registeredCrafts.forEach((craftId, subCrafts) -> {
                     if(subCrafts.containsKey("shaped"))
-                    subCrafts.get("shaped").forEach(craftKey -> {
-                        crafts.add(craftId + "." + craftKey);
-                    });
+                    subCrafts.get("shaped").forEach(craftKey -> crafts.add(craftId + "." + craftKey));
                 });
                 return crafts;
             }
@@ -64,9 +66,7 @@ public final class CommandCompletionsManager {
                 List<String> crafts = new ArrayList<>();
                 CraftManager.registeredCrafts.forEach((craftId, subCrafts) -> {
                     if(subCrafts.containsKey("shapeless"))
-                    subCrafts.get("shapeless").forEach(craftKey -> {
-                        crafts.add(craftId + "." + craftKey);
-                    });
+                    subCrafts.get("shapeless").forEach(craftKey -> crafts.add(craftId + "." + craftKey));
                 });
                 return crafts;
             }

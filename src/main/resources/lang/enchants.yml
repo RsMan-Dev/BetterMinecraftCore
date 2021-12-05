@@ -1,0 +1,46 @@
+#ENCHANTMENT TRANSLATES (color codes are allowed)
+translations:
+  #Vanilla enchants (some will be replaced by custom enchants)
+  AQUA_INFINITY: Aqua Affinity
+  BANE_OF_ARTHROPODS: Bane of Arthropods
+  BLAST_PROTECTION: Blast Protection
+  CHANNELING: Channeling
+  BINDING_CURSE: Curse of Binding
+  VANISHING_CURSE: Curse of Vanishing
+  DEPTH_STRIDER: Depth Strider
+  EFFICIENCY: Efficiency
+  FEATHER_FALLING: Feather Falling
+  FIRE_ASPECT: Fire Aspect
+  FIRE_PROTECTION: Fire Protection
+  FLAME: Flame
+  FORTUNE: Fortune
+  FROST_WALKER: Frost Walker
+  IMPALING: Impaling
+  INFINITY: Infinity
+  KNOCKBACK: Knockback
+  LOYALTY: Loyalty
+  LUCK_OF_THE_SEA: Luck of the Sea
+  LURE: Lure
+  MENDING: Mending
+  MULTISHOT: Multishot
+  PIERCING: Piercing
+  POWER: Power
+  PROJECTILE_PROTECTION: Projectile Protection
+  OLD_PROTECTION: Protection
+  PUNCH: Punch
+  QUICK_CHARGE: Quick Charge
+  RESPIRATION: Respiration
+  RIPTIDE: Riptide
+  SHARPNESS: Sharpness
+  SILK_TOUCH: Silk Touch
+  SMITE: Smite
+  SOUL_SPEED: Soul Speed
+  SWEEPING: Sweeping Edge
+  UNBREAKING: Unbreaking
+  THORNS: Thorns
+  LOOTING: Looting
+
+  #Custom enchants
+  PROTECTION: Protection
+  TELEKINESIS: Telekinesis
+  AIMING: Aiming

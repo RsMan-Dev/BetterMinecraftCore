@@ -5,6 +5,7 @@ import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass;
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemTypeChecker;
+import me.rsman.BetterMinecraftCore.enums.EEnchants;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.event.EventHandler;
@@ -19,8 +20,11 @@ public class EnchantListener implements Listener {
     public void addCustomEnchantFromTable(EnchantItemEvent e){
         Map<Enchantment,Map<Enchantment, Integer>> enchantsToReplace = new HashMap<>();
         for (Map.Entry<Enchantment, Integer> enchantToAdd: e.getEnchantsToAdd().entrySet()) {
-           if(enchantToAdd.getKey().getKey().toString().equals("minecraft:protection")){
-               enchantsToReplace.put(enchantToAdd.getKey(), new HashMap<Enchantment, Integer>(){{put(EnchantManager.enchants.get("minecraft:bmc_protection"),enchantToAdd.getValue());}});
+           if(EEnchants.getReplacesMapFromNamespaces().containsKey(enchantToAdd.getKey().getKey().toString())){
+               enchantsToReplace.put(enchantToAdd.getKey(),
+                       new HashMap<Enchantment, Integer>(){{
+                           put(EEnchants.getReplacesMapFromNamespaces().get(enchantToAdd.getKey().getKey().toString()),enchantToAdd.getValue());
+               }});
            }
         }
         for (Map.Entry<Enchantment,Map<Enchantment, Integer>> enchantToReplace: enchantsToReplace.entrySet()) {
@@ -29,10 +33,10 @@ public class EnchantListener implements Listener {
             e.getEnchantsToAdd().put(enchant.getKey(), enchant.getValue());
         }
         List<CustomEnchantClass> applicableEnchants = new ArrayList<>();
-        for(Map.Entry<String, Enchantment> customEnchant : EnchantManager.enchants.entrySet()){
-            if(customEnchant.getValue() instanceof CustomEnchantClass){
-                if(((CustomEnchantClass) customEnchant.getValue()).isApplicable(e.getItem()) && ((CustomEnchantClass) customEnchant.getValue()).getMinimumLevel() < e.getExpLevelCost()){
-                    applicableEnchants.add((CustomEnchantClass)customEnchant.getValue());
+        for(EEnchants ench : EEnchants.values()){
+            if(ench.getEnchant() instanceof CustomEnchantClass){
+                if(((CustomEnchantClass) ench.getEnchant()).isApplicable(e.getItem()) && ((CustomEnchantClass) ench.getEnchant()).getMinimumLevel() < e.getExpLevelCost()){
+                    applicableEnchants.add((CustomEnchantClass)ench.getEnchant());
                 }
             }
         }
@@ -42,7 +46,7 @@ public class EnchantListener implements Listener {
             int deltaMax = 30 - applicableEnchants.get(enchantKey).getMinimumLevel();
             int level = Math.max(1,
                             Math.min(applicableEnchants.get(enchantKey).getMaxLevel(),
-                                Math.round((float)(deltaLv/deltaMax)*applicableEnchants.get(enchantKey).getMaxLevel())
+                                Math.round((((float)deltaLv)/((float)deltaMax))*applicableEnchants.get(enchantKey).getMaxLevel())
                             )
                         );
             e.getEnchantsToAdd().put(applicableEnchants.get(enchantKey), level);
@@ -51,7 +55,6 @@ public class EnchantListener implements Listener {
         for (Map.Entry<Enchantment, Integer> enchantToAdd: e.getEnchantsToAdd().entrySet()) {
             e.getItem().addUnsafeEnchantment(enchantToAdd.getKey(), enchantToAdd.getValue());
         }
-        BetterMinecraftCore.getInstance().getLogger().info(e.getEnchantsToAdd().toString());
         ItemManager.updateItemLore(e.getItem());
     }
 }

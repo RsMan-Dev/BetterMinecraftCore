@@ -1,6 +1,7 @@
 package me.rsman.BetterMinecraftCore.Managers;
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -134,8 +135,8 @@ public final class CraftManager {
             assert tag != null;
             out = new AbstractMap.SimpleEntry<>(character, new RecipeChoice.MaterialChoice(tag));
         } else {
-            if(ItemManager.registeredItems.containsKey(item)){
-                ItemStack temp = ItemManager.registeredItems.get(item).clone();
+            if(BmcItemContainer.getInstance().getItems().containsKey(item)){
+                ItemStack temp = BmcItemContainer.getInstance().getItems().get(item).getItemStack();
                 temp.setAmount(number);
                 out = new AbstractMap.SimpleEntry<>(character, new RecipeChoice.ExactChoice(temp));
             } else {

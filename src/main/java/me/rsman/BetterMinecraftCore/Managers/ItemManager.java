@@ -1,24 +1,19 @@
 package me.rsman.BetterMinecraftCore.Managers;
 
-import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
+import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass;
+import me.rsman.BetterMinecraftCore.enums.EAttributes;
+import me.rsman.BetterMinecraftCore.formatters.LoreFormatter;
 import me.rsman.BetterMinecraftCore.utils.NBT;
-import me.rsman.BetterMinecraftCore.utils.RomanNumber;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Tag;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
 
 public final class ItemManager {
-    public static final String[] allowedAttrs = {"damage", "strength", "intelligence", "critChance", "critDamage", "defense", "health", "attackSpeed", "mana", "speed"};
-    private static final String[] percentAttrs = {"critChance", "critDamage", "speed", "attackSpeed"};
 
     public static Map<String, ItemStack> registeredItems = new HashMap<>();
 
@@ -53,25 +48,25 @@ public final class ItemManager {
     public static void setRenamable(ItemStack item, boolean val){
         NBT.set(item,"renamable", PersistentDataType.BYTE, (byte)(val? 1: 0));
     }
-    public static boolean isRenamable(ItemStack item, boolean val){
+    public static boolean isRenamable(ItemStack item){
         Byte renamable = (Byte)NBT.get(item,"renamable", PersistentDataType.BYTE);
         return (renamable == null || renamable == 1);
     }
-    public static void setItemAttr(ItemStack item, String stat, int value){
-        NBT.set(item, "attributes/"+stat, PersistentDataType.INTEGER, value);
+    public static void setItemAttr(ItemStack item, String attr, long value){
+        NBT.set(item, "attributes/"+attr, PersistentDataType.LONG, value);
         updateItemLore(item);
     }
-    public static Integer getItemAttr(ItemStack item, String attr){
-        Integer value = (Integer) NBT.get(item, "attributes/"+attr, PersistentDataType.INTEGER);
-        if (value == null) value = 0;
+    public static long getItemAttr(ItemStack item, String attr){
+        Long value = (Long) NBT.get(item, "attributes/"+attr, PersistentDataType.LONG);
+        if (value == null) value = 0L;
         return value;
     }
-    public static Integer getItemEnchantAttr(ItemStack item, String attr){
-        int value = 0;
+    public static long getItemEnchantAttr(ItemStack item, String attr){
+        long value = 0;
         for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
-            if(EnchantManager.isCustom(enchant.getKey())){
-                Map<String, Integer> modifiers = EnchantManager.enchantsAttributesModifiers.get(enchant.getKey().getKey().toString());
-                if( modifiers != null ) {
+            if(enchant instanceof CustomEnchantClass){
+                if(((CustomEnchantClass) enchant).hasAttributesModifiers()) {
+                    Map<String, Long> modifiers = ((CustomEnchantClass) enchant).getAttributesModifiers();
                     if(modifiers.containsKey(attr)){
                         value += modifiers.get(attr) * enchant.getValue();
                     }
@@ -80,11 +75,11 @@ public final class ItemManager {
         }
         return value;
     }
-    public static Integer getFinalItemAttr(ItemStack item, String attr){
+    public static long getFinalItemAttr(ItemStack item, String attr){
         return getItemAttr(item, attr) + getItemEnchantAttr(item, attr);
     }
     public static boolean hasItemAttr(ItemStack item, String attr){
-        return NBT.get(item, "attributes/"+attr, PersistentDataType.INTEGER) != null;
+        return NBT.get(item, "attributes/"+attr, PersistentDataType.LONG) != null;
     }
     public static void setCustomLore(ItemStack item, String text, Integer line){
         String lore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
@@ -134,54 +129,8 @@ public final class ItemManager {
     public static void updateItemLore(ItemStack item){
         ItemMeta itemMeta = item.getItemMeta();
         assert itemMeta != null;
-        List<String> lore = new ArrayList<>();
-        for (String attr : ItemManager.allowedAttrs) {
-            Integer attrVal = getItemAttr(item, attr);
-            Integer enchAttrVal = getItemEnchantAttr(item, attr);
-            if(attrVal != 0 || enchAttrVal != 0){
-                boolean percent = Arrays.asList(ItemManager.percentAttrs).contains(attr);
-                lore.add(
-                    "§7" + attr.substring(0, 1).toUpperCase() + attr.substring(1) + ":" +
-                    "§a +" + attrVal + (percent ? "%" : "") + " " +
-                    (enchAttrVal >0 ?"§6(+" + enchAttrVal + (percent ? "%" : "") + ")" : "")
-                );
-            }
-        }
 
-        boolean first = true;
-        StringBuilder line = new StringBuilder("§7");
-        for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
-            if(enchant.getValue() <= 0)continue;
-            if(first){ first = false; lore.add(""); }
-
-            String enchantName = EnchantManager.humanizedNames.get(enchant.getKey().getKey().toString())
-                    + " " + RomanNumber.toRoman(enchant.getValue());
-
-            if((line + enchantName).length() < 30){
-                if(!line.toString().equals("§7")) line.append(", ");
-                line.append(enchantName);
-            } else {
-                lore.add(line + ",");
-                line = new StringBuilder("§7" + enchantName);
-            }
-        }
-        if(!line.toString().equals("§7")){
-            lore.add(line.toString());
-        }
-
-        String CustomLore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
-        if(CustomLore != null && !CustomLore.equals("")) {
-            lore.add("");
-            CustomLore = CustomLore.replace("&", "§");
-            lore.addAll(Arrays.asList(CustomLore.split("\\|")));
-        }
-
-        if(itemMeta.isUnbreakable()){
-            lore.add("");
-            lore.add("§cUnbreakable");
-        }
-
-        itemMeta.setLore(lore);
+        itemMeta.setLore(LoreFormatter.format(item));
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
@@ -190,122 +139,6 @@ public final class ItemManager {
             itemMeta.getAttributeModifiers().clear();
         }
         item.setItemMeta(itemMeta);
-    }
-    public static void registerAllItemsWithConfig(){
-        ConfigManager.getConfig("items/all", true);
-        Set<String> itemNames = ConfigManager.getKeys("items/all", "items");
-        itemNames.forEach(name->{
-            ItemStack itemTR = new ItemStack(
-                    Material.valueOf((String)ConfigManager.getKey("items/all","items."+name+".material", "String", "AIR"))
-            );
-
-            ItemManager.setItemName(itemTR, name);
-
-            Integer rev = (Integer)ConfigManager.getKey("items/all","items."+name+".rev", "Int", 1);
-            if(rev == null) rev = 1;
-            ItemManager.setItemRev(itemTR, rev);
-
-            final ItemMeta[] itemTRMeta = {itemTR.getItemMeta()};
-            if(itemTRMeta[0] == null){
-                registeredItems.put(name, itemTR);
-            } else {
-                ConfigManager.getKeys("items/all", "items."+name).forEach(option->{
-                    switch (option){
-                        case "materialID":
-                            itemTRMeta[0].setCustomModelData((Integer)ConfigManager.getKey("items/all","items."+name+".materialID", "Int", 0));
-                            break;
-                        case "displayName":
-                            itemTRMeta[0].setDisplayName((String) ConfigManager.getKey("items/all","items."+name+".displayName", "String", ""));
-                            break;
-                        case "lore":
-                            itemTR.setItemMeta(itemTRMeta[0]);
-                            setCustomLoreAll(itemTR, (List<String>) Objects.requireNonNull(ConfigManager.getKey("items/all", "items." + name + ".lore", "StringList", "[]")));
-                            itemTRMeta[0] = itemTR.getItemMeta();
-                            break;
-                        case "unbreakable":
-                            itemTRMeta[0].setUnbreakable(((Integer)ConfigManager.getKey("items/all","items."+name+".unbreakable", "Int", "")) != 0);
-                            break;
-                        case "renamable":
-                            itemTR.setItemMeta(itemTRMeta[0]);
-                            setRenamable(itemTR, (Boolean)ConfigManager.getKey("items/all", "items." + name + ".renamable", "Boolean", true));
-                            itemTRMeta[0] = itemTR.getItemMeta();
-                            break;
-                        case "attributes":
-                            itemTR.setItemMeta(itemTRMeta[0]);
-                            ConfigManager.getKeys("items/all", "items."+name+".attributes").forEach(attribute->{
-                                if(Arrays.asList(ItemManager.allowedAttrs).contains(attribute)){
-                                    Integer attrVal = (Integer)ConfigManager.getKey("items/all","items."+name+".attributes."+attribute, "Int", 0);
-                                    if(attrVal != null)
-                                    ItemManager.setItemAttr(itemTR, attribute, attrVal);
-                                }
-                            });
-                            itemTRMeta[0] = itemTR.getItemMeta();
-                            break;
-                        case "enchants":
-                            itemTR.setItemMeta(itemTRMeta[0]);
-                            ConfigManager.getKeys("items/all", "items."+name+".enchants").forEach(enchant->{
-                                if(EnchantManager.enchants.containsKey("minecraft:"+enchant)){
-                                    Integer enchVal = (Integer)ConfigManager.getKey("items/all","items."+name+".enchants."+enchant, "Int", 0);
-                                    if(enchVal != null)
-                                    itemTR.addUnsafeEnchantment(EnchantManager.enchants.get("minecraft:"+enchant), enchVal);
-                                }
-                            });
-                            itemTRMeta[0] = itemTR.getItemMeta();
-                            break;
-                    }
-                });
-            }
-            itemTR.setItemMeta(itemTRMeta[0]);
-            if(itemTRMeta[0] != null)
-            ItemManager.updateItemLore(itemTR);
-            ItemManager.registeredItems.put(name, itemTR);
-        });
-    }
-    public static void deleteItemFromConfig(String name){
-        ConfigManager.setKey("items/all", "items."+name, null);
-    }
-    public static void setItemInConfig(ItemStack item, String name){
-        ConfigManager.setKey("items/all", "items."+name, new HashMap<>());
-        ConfigManager.setKey("items/all", "items."+name+".material", item.getType().name());
-        ConfigManager.setKey("items/all", "items."+name+".rev", getItemRev(item));
-
-        ItemMeta meta = item.getItemMeta();
-        if(meta != null){
-            if(meta.hasCustomModelData()){
-                ConfigManager.setKey("items/all", "items."+name+".materialID", meta.getCustomModelData());
-            }
-            if(meta.hasDisplayName()){
-                ConfigManager.setKey("items/all", "items."+name+".displayName", meta.getDisplayName());
-            }
-            if(meta.isUnbreakable()){
-                ConfigManager.setKey("items/all", "items."+name+".unbreakable", 1);
-            }
-            String CustomLore = (String) NBT.get(item, "lore", PersistentDataType.STRING);
-            if(CustomLore != null){
-                ConfigManager.setKey("items/all", "items."+name+".lore", Arrays.asList(CustomLore.split("\\|")));
-            }
-            Byte isRenamable = (Byte) NBT.get(item, "renamable", PersistentDataType.BYTE);
-            if(isRenamable != null){
-                ConfigManager.setKey("items/all", "items."+name+".renamable", isRenamable == 1);
-            }
-            boolean first = true;
-            for (String attr : ItemManager.allowedAttrs) {
-                Integer value = ItemManager.getItemAttr(item, attr);
-                if(value != 0){
-                    if(first){
-                        ConfigManager.setKey("items/all", "items."+name+".attributes", new HashMap<>());
-                        first = false;
-                    }
-                    ConfigManager.setKey("items/all", "items."+name+".attributes."+attr, value);
-                }
-            }
-            if(!item.getEnchantments().isEmpty()){
-                ConfigManager.setKey("items/all", "items."+name+".enchants", new HashMap<>());
-                for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
-                    ConfigManager.setKey("items/all", "items."+name+".enchants."+enchant.getKey().getKey().toString().replace("minecraft:", ""), enchant.getValue());
-                }
-            }
-        }
     }
     public static void updateItem(ItemStack item){
         ItemStack itemInConf = registeredItems.get(ItemManager.getItemName(item));
@@ -321,7 +154,7 @@ public final class ItemManager {
         meta.setDisplayName(metaConf.getDisplayName());
         meta.setUnbreakable(metaConf.isUnbreakable());
         item.setItemMeta(meta);
-        for (String attr : allowedAttrs) {
+        for (String attr : EAttributes.getAllKeys()) {
             if(hasItemAttr(itemInConf, attr)){
                 setItemAttr(item, attr, getItemAttr(itemInConf, attr));
             }

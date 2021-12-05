@@ -6,8 +6,16 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Protection extends CustomEnchantClass {
     private static Protection instance;
+
+    private static final Map<String, Long> attributeModifiers = new HashMap<String, Long>(){{
+        put("defense", 5L);
+        put("health", 15L);
+    }};
 
     public Protection() {
         super(NamespacedKey.minecraft("bmc_protection"));
@@ -68,5 +76,15 @@ public class Protection extends CustomEnchantClass {
     @Override
     public int getMinimumLevel() {
         return 99;
+    }
+
+    @Override
+    public boolean hasAttributesModifiers() {
+        return false;
+    }
+
+    @Override
+    public Map<String, Long> getAttributesModifiers() {
+        return Protection.attributeModifiers;
     }
 }

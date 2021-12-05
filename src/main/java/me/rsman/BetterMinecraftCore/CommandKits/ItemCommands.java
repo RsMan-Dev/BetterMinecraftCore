@@ -12,6 +12,9 @@ import me.rsman.BetterMinecraftCore.Managers.Command.Lang.MessageKeys;
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemManager;
 import me.rsman.BetterMinecraftCore.Managers.PlayerManager;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
+import me.rsman.BetterMinecraftCore.configs.models.BmcItem;
+import me.rsman.BetterMinecraftCore.enums.EEnchants;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -55,7 +58,7 @@ public class ItemCommands extends BaseCommand {
         if(item.getType() == Material.AIR || item.getItemMeta() == null){
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM);return;
         }
-        EnchantManager.addEnchantment(item, EnchantManager.enchants.get(ench), level);
+        EnchantManager.addEnchantment(item, EEnchants.valueOf(ench).getEnchant(), level);
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender);
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_SET, "{ench}", ench, "{level}", level+"");
     }
@@ -85,7 +88,7 @@ public class ItemCommands extends BaseCommand {
         if(item.getType() == Material.AIR || item.getItemMeta() == null){
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM);return;
         }
-        EnchantManager.removeEnchantment(item, EnchantManager.enchants.get(ench));
+        EnchantManager.removeEnchantment(item, EEnchants.valueOf(ench).getEnchant());
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender);
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_REMOVE, "{ench}", ench);
     }
@@ -147,11 +150,11 @@ public class ItemCommands extends BaseCommand {
     @Syntax("<item_key> [amount]")
     public void onGet(Player playerSender, @Values("@item") String itemName, @Optional Integer number){
         CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
-        if(!ItemManager.registeredItems.containsKey(itemName)){
+        if(!BmcItemContainer.getInstance().getItems().containsKey(itemName)){
             issuerSender.sendInfo(MessageKeys.INCORRECT_NAME, "{val}", itemName);
             return;
         }
-        ItemStack item = ItemManager.registeredItems.get(itemName).clone();
+        ItemStack item = BmcItemContainer.getInstance().getItems().get(itemName).getItemStack();
         if(number == null){ number = 1; }
         int initNum = number;
         do{
@@ -173,11 +176,11 @@ public class ItemCommands extends BaseCommand {
     @Syntax("<item_key> <player> [amount]")
     public void onGive(@Optional Player playerSender, @Values("@item") String itemName, OnlinePlayer player, @Optional Integer number){
         CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
-        if(!ItemManager.registeredItems.containsKey(itemName)){
+        if(!BmcItemContainer.getInstance().getItems().containsKey(itemName)){
             issuerSender.sendInfo(MessageKeys.INCORRECT_NAME, "{val}", itemName);
             return;
         }
-        ItemStack item = ItemManager.registeredItems.get(itemName).clone();
+        ItemStack item = BmcItemContainer.getInstance().getItems().get(itemName).getItemStack();
         if(number == null){ number = 1; }
         int initNum = number;
         do{
@@ -214,9 +217,8 @@ public class ItemCommands extends BaseCommand {
         if(itemName.matches("^[a-zA-Z]+(_[a-zA-Z]+)*$")){
             ItemManager.setItemName(item, itemName);
             ItemManager.getItemRev(item);
-            ItemManager.setItemInConfig(item, itemName);
-            ItemManager.registeredItems.clear();
-            ItemManager.registerAllItemsWithConfig();
+            BmcItemContainer.getInstance().getItems().put(itemName, BmcItem.parseItemStack(item));
+            BmcItemContainer.save();
             issuerSender.sendInfo(MessageKeys.ITEM_SAVED, "{item}", itemName);
         } else {
             issuerSender.sendError(MessageKeys.INCORRECT_NAME, "{val}", itemName);
@@ -229,9 +231,8 @@ public class ItemCommands extends BaseCommand {
     @Syntax("<item_key>")
     public void onDelete(Player playerSender, @Values("@item") String itemName){
         CommandIssuer issuerSender = commandManager.getCommandIssuer(playerSender);
-        ItemManager.deleteItemFromConfig(itemName);
-        ItemManager.registeredItems.clear();
-        ItemManager.registerAllItemsWithConfig();
+        BmcItemContainer.getInstance().getItems().remove(itemName);
+        BmcItemContainer.save();
         issuerSender.sendInfo(MessageKeys.ITEM_DELETED, "{item}", itemName);
     }
     @Subcommand("setLore")

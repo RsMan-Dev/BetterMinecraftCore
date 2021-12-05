@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 public final class ListenersManager {
     public static void registerAllEvents(){
         Listener[] listeners = {
-            new EntityListener(),
+            new DamageListener(),
             new PlayerConnectListener(),
             new EquipmentListener(),
             new BlockListener(),

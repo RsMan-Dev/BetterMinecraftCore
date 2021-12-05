@@ -14,7 +14,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Map;
 
-public class EntityListener implements Listener {
+public class DamageListener implements Listener {
     @EventHandler
     public void onEntityDamaged(EntityDamageByEntityEvent event){
         Entity damager = event.getDamager();

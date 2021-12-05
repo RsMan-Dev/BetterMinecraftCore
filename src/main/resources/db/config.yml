@@ -1,8 +1,0 @@
-#database has to be on mariaDB actually
-#If the config has an error, or a missing key, plugin will repair the file, but all comments will be deleted.
-
-host: localhost
-port: 3306
-database: bmc
-user: root
-password: ""

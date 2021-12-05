@@ -7,7 +7,7 @@ items:
       damage: 55
       strength: 88
     enchants:
-      fc_telekinesis: 1
+      TELEKINESIS: 1
   compressedLapis:
     material: LAPIS_LAZULI
     materialId: 1

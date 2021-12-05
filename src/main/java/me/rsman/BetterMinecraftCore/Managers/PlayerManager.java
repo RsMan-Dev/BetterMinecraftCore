@@ -2,6 +2,7 @@ package me.rsman.BetterMinecraftCore.Managers;
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
 import me.rsman.BetterMinecraftCore.db.models.PlayerBaseAttr;
+import me.rsman.BetterMinecraftCore.enums.EAttributes;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -92,7 +93,7 @@ public final class PlayerManager {
             PlayerManager.getBaseAttributes(uuid, true);
         }
         attributes = PlayerManager.playersAttributes.get(uuid);
-        for (String attr : ItemManager.allowedAttrs) {
+        for (String attr : EAttributes.getAllKeys()) {
             returnAttributes.put(attr,
                 attributes.get(attr+"_base")+attributes.get(attr+"_equip")+attributes.get(attr+"_skill")+attributes.get(attr+"_talisman")
             );
@@ -117,12 +118,12 @@ public final class PlayerManager {
                     equipment.getBoots(),
             };
             Map<String, Long> finalAttributes= new HashMap<>();
-            for (String attr : ItemManager.allowedAttrs) { finalAttributes.put(attr, 0L); }
+            for (String attr : EAttributes.getAllKeys()) { finalAttributes.put(attr, 0L); }
             for (ItemStack item : items) {
                 if(item == null || item.getType() == Material.AIR || item.getType() == Material.WRITABLE_BOOK) continue;
                 ItemManager.updateItem(item);
-                for (String attr : ItemManager.allowedAttrs) {
-                    Integer attrValue = ItemManager.getFinalItemAttr(item,attr);
+                for (String attr : EAttributes.getAllKeys()) {
+                    long attrValue = ItemManager.getFinalItemAttr(item,attr);
                     finalAttributes.put(attr, finalAttributes.get(attr) + attrValue);
                 }
             }

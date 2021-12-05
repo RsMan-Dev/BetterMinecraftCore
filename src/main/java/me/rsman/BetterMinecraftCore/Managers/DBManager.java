@@ -6,6 +6,8 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.logger.Log;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.table.TableUtils;
+import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
+import me.rsman.BetterMinecraftCore.configs.containers.GlobalConfigContainer;
 import me.rsman.BetterMinecraftCore.db.models.PlayerBaseAttr;
 
 import java.sql.DriverManager;
@@ -17,13 +19,14 @@ public final class DBManager {
 
     public static Dao<PlayerBaseAttr, String> playerBaseAttrDao;
 
-    public static boolean initConnection(){
-        String host = (String)ConfigManager.getKey("db/config", "host", "String", "localhost");
-        String port = (String)ConfigManager.getKey("db/config", "port", "String", "3306");
-        String database = (String)ConfigManager.getKey("db/config", "database", "String", "fs");
-        String user = (String)ConfigManager.getKey("db/config", "user", "String", "root");
-        String password = (String)ConfigManager.getKey("db/config", "password", "String", "");
+    public static void initConnection(){
+        String host = GlobalConfigContainer.getInstance().getDb_host();
+        String port = GlobalConfigContainer.getInstance().getDb_port();
+        String database = GlobalConfigContainer.getInstance().getDb_database();
+        String user = GlobalConfigContainer.getInstance().getDb_user();
+        String password = GlobalConfigContainer.getInstance().getDb_password();
 
+        BetterMinecraftCore.getInstance().getLogger().info("§3Initializing DB...");
         try{
             Logger.setGlobalLogLevel(Log.Level.ERROR);
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -31,10 +34,11 @@ public final class DBManager {
             TableUtils.createTableIfNotExists(connectionSource, PlayerBaseAttr.class);
             playerBaseAttrDao = DaoManager.createDao(connectionSource, PlayerBaseAttr.class);
 
+            BetterMinecraftCore.getInstance().getLogger().info("§bDB connected!");
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
+            //throwables.printStackTrace();
+            BetterMinecraftCore.getInstance().getLogger().warning("§4Database connection not initialized, please setup config for mariaDB database, disabling plugin");
+            BetterMinecraftCore.getInstance().getServer().getPluginManager().disablePlugin(BetterMinecraftCore.getInstance());
         }
-        return true;
     }
 }

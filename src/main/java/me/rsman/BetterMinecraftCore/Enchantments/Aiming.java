@@ -1,14 +1,18 @@
 package me.rsman.BetterMinecraftCore.Enchantments;
 
-import me.rsman.BetterMinecraftCore.Managers.ItemManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemTypeChecker;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Aiming extends CustomEnchantClass {
     private static Aiming instance;
+
+    private static final Map<String, Long> attributeModifiers = null;
 
     public Aiming() {
         super(NamespacedKey.minecraft("bmc_aiming"));
@@ -69,5 +73,15 @@ public class Aiming extends CustomEnchantClass {
     @Override
     public int getMinimumLevel() {
         return 10;
+    }
+
+    @Override
+    public boolean hasAttributesModifiers() {
+        return false;
+    }
+
+    @Override
+    public Map<String, Long> getAttributesModifiers() {
+        return Aiming.attributeModifiers;
     }
 }
