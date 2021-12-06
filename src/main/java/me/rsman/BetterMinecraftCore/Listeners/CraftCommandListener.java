@@ -5,6 +5,10 @@ import me.rsman.BetterMinecraftCore.Managers.Command.Lang.MessageKeys;
 import me.rsman.BetterMinecraftCore.Managers.ConfigManager;
 import me.rsman.BetterMinecraftCore.Managers.CraftManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemManager;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer;
+import me.rsman.BetterMinecraftCore.configs.models.BmcCraftSubContainer;
+import me.rsman.BetterMinecraftCore.configs.models.BmcShapedCraft;
+import me.rsman.BetterMinecraftCore.configs.models.BmcShapelessCraft;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -18,10 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
 import me.rsman.BetterMinecraftCore.CommandKits.CraftCommands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CraftCommandListener implements Listener {
@@ -60,23 +61,31 @@ public class CraftCommandListener implements Listener {
       schemes[i / 3][i % 3] = itemName + (item != null ? " " + item.getAmount() : "");
       i++;
     }
-
     if(isShaped){
       String[] schemesFormatted = {"","",""};
       for (i=0; i<3; i++){
         schemesFormatted[i] = schemes[i][0] + " | " +  schemes[i][1] + " | " +  schemes[i][2];
       }
-      ConfigManager.setKey("crafts/all", "recipes."+name+".shaped."+key+".shape", schemesFormatted);
-      ConfigManager.setKey("crafts/all", "recipes."+name+".shaped."+key+".result", result +" "+ resultCount);
+      BmcShapedCraft bmcCraft = new BmcShapedCraft();
+      bmcCraft.setShape(Arrays.asList(schemesFormatted));
+      bmcCraft.setResult(result +" "+ resultCount);
+      bmcCraft.setName(name);
+      bmcCraft.setKey(key);
+      bmcCraft.registerSelfInConfig();
     } else {
       List<String> schemesFormatted = new ArrayList<>();
       for (i=0; i<9; i++){
         if(!schemes[i / 3][i % 3].equals("m.AIR")) schemesFormatted.add(schemes[i / 3][i % 3]);
       }
-      ConfigManager.setKey("crafts/all", "recipes."+name+".shapeless."+key+".ingredients", schemesFormatted);
-      ConfigManager.setKey("crafts/all", "recipes."+name+".shapeless."+key+".result", result +" "+ resultCount);
+      BmcShapelessCraft bmcCraft = new BmcShapelessCraft();
+      bmcCraft.setIngredients(schemesFormatted);
+      bmcCraft.setResult(result +" "+ resultCount);
+      bmcCraft.setName(name);
+      bmcCraft.setKey(key);
+      bmcCraft.registerSelfInConfig();
     }
 
-    CraftManager.initCrafts();
+    BmcCraftContainer.load();
+    BmcCraftContainer.registerCrafts();
   }
 }

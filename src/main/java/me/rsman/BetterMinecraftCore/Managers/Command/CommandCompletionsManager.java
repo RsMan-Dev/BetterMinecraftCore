@@ -5,6 +5,7 @@ import co.aikar.commands.CommandCompletions;
 import me.rsman.BetterMinecraftCore.Managers.CraftManager;
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager;
 import me.rsman.BetterMinecraftCore.Managers.ItemManager;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer;
 import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
 import me.rsman.BetterMinecraftCore.enums.EAttributes;
 import me.rsman.BetterMinecraftCore.enums.EEnchants;
@@ -51,24 +52,14 @@ public final class CommandCompletionsManager {
         commandCompletions.registerAsyncCompletion("shapedCrafts", c -> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                List<String> crafts = new ArrayList<>();
-                CraftManager.registeredCrafts.forEach((craftId, subCrafts) -> {
-                    if(subCrafts.containsKey("shaped"))
-                    subCrafts.get("shaped").forEach(craftKey -> crafts.add(craftId + "." + craftKey));
-                });
-                return crafts;
+                return BmcCraftContainer.getShapedKeys();
             }
             return null;
         });
         commandCompletions.registerAsyncCompletion("shapelessCrafts", c -> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                List<String> crafts = new ArrayList<>();
-                CraftManager.registeredCrafts.forEach((craftId, subCrafts) -> {
-                    if(subCrafts.containsKey("shapeless"))
-                    subCrafts.get("shapeless").forEach(craftKey -> crafts.add(craftId + "." + craftKey));
-                });
-                return crafts;
+                return BmcCraftContainer.getShapelessKeys();
             }
             return null;
         });

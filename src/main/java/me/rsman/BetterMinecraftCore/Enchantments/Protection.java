@@ -80,7 +80,7 @@ public class Protection extends CustomEnchantClass {
 
     @Override
     public boolean hasAttributesModifiers() {
-        return false;
+        return true;
     }
 
     @Override

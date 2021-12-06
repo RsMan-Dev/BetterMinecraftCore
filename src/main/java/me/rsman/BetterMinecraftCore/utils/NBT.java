@@ -62,6 +62,8 @@ public class NBT {
             return false;
         }
         itemData.remove(namespacedKey);
+        itemMeta = NBT.setMainData(itemMeta, itemData);
+        item.setItemMeta(itemMeta);
         return true;
     }
 }

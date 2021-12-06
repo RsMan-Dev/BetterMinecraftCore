@@ -9,6 +9,7 @@ import me.rsman.BetterMinecraftCore.Managers.*;
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager;
 import me.rsman.BetterMinecraftCore.Managers.Command.Lang.MessageKeys;
 import me.rsman.BetterMinecraftCore.configs.ConfigLoader;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
@@ -32,8 +33,8 @@ public class RootCommands extends BaseCommand {
     @CommandPermission("bmc.admin")
     @Description("{@@bmc.command.description.reload}")
     public void onReload(Player playerSender) {
-        CraftManager.initCrafts();
         ConfigLoader.init();
+        BmcCraftContainer.registerCrafts();
         try {
             commandManager.getLocales().loadYamlLanguageFile("lang/commandMessages.yml", Locale.ENGLISH);
         } catch (IOException | InvalidConfigurationException e) {

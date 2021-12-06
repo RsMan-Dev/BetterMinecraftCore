@@ -1,10 +1,8 @@
 package me.rsman.BetterMinecraftCore.configs;
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
-import me.rsman.BetterMinecraftCore.configs.containers.AttributeLangContainer;
-import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
-import me.rsman.BetterMinecraftCore.configs.containers.EnchantLangContainer;
-import me.rsman.BetterMinecraftCore.configs.containers.GlobalConfigContainer;
+import me.rsman.BetterMinecraftCore.configs.containers.*;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 import org.yaml.snakeyaml.introspector.Property;
@@ -48,7 +46,14 @@ public class ConfigLoader {
 
     public static <T> boolean saveConfig(String configFile, T obj) {
         try {
-            Yaml yaml = new Yaml(new CustomClassLoaderConstructor(ConfigLoader.class.getClassLoader()),getRepresenter());
+            DumperOptions options = new DumperOptions();
+            options.setSplitLines(false);
+            options.setIndent(2);
+            options.setPrettyFlow(true);
+            // Fix below - additional configuration
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+            Yaml yaml = new Yaml(new CustomClassLoaderConstructor(ConfigLoader.class.getClassLoader()),getRepresenter(), options);
             File file = getFile(configFile);
 
             BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
@@ -78,6 +83,7 @@ public class ConfigLoader {
         BmcItemContainer.load();
         AttributeLangContainer.load();
         EnchantLangContainer.load();
+        BmcCraftContainer.load();
     }
 
 }

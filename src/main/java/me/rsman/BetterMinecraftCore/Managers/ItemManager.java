@@ -1,10 +1,14 @@
 package me.rsman.BetterMinecraftCore.Managers;
 
+import me.rsman.BetterMinecraftCore.BetterMinecraftCore;
 import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer;
 import me.rsman.BetterMinecraftCore.enums.EAttributes;
+import me.rsman.BetterMinecraftCore.enums.EEnchants;
 import me.rsman.BetterMinecraftCore.formatters.LoreFormatter;
 import me.rsman.BetterMinecraftCore.utils.NBT;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -15,10 +19,12 @@ import java.util.*;
 
 public final class ItemManager {
 
-    public static Map<String, ItemStack> registeredItems = new HashMap<>();
-
     public static void setItemName(ItemStack item, String value){
-        NBT.set(item, "name", PersistentDataType.STRING, value);
+        if(value.equals("")){
+            NBT.remove(item, "name");
+        }else{
+            NBT.set(item, "name", PersistentDataType.STRING, value);
+        }
     }
     public static String getItemName(ItemStack item){
         String name = (String) NBT.get(item, "name", PersistentDataType.STRING);
@@ -64,9 +70,11 @@ public final class ItemManager {
     public static long getItemEnchantAttr(ItemStack item, String attr){
         long value = 0;
         for (Map.Entry<Enchantment, Integer> enchant: item.getEnchantments().entrySet()) {
-            if(enchant instanceof CustomEnchantClass){
-                if(((CustomEnchantClass) enchant).hasAttributesModifiers()) {
-                    Map<String, Long> modifiers = ((CustomEnchantClass) enchant).getAttributesModifiers();
+            String enchKey = enchant.getKey().getKey().toString();
+            if(enchKey.startsWith(NamespacedKey.minecraft("bmc_").toString())){
+                EEnchants ench = EEnchants.valueOf(EEnchants.getEnumKeyFromKey(enchKey.replace("minecraft:", "")));
+                if(((CustomEnchantClass)ench.getEnchant()).hasAttributesModifiers()) {
+                    Map<String, Long> modifiers = ((CustomEnchantClass) ench.getEnchant()).getAttributesModifiers();
                     if(modifiers.containsKey(attr)){
                         value += modifiers.get(attr) * enchant.getValue();
                     }
@@ -141,8 +149,14 @@ public final class ItemManager {
         item.setItemMeta(itemMeta);
     }
     public static void updateItem(ItemStack item){
-        ItemStack itemInConf = registeredItems.get(ItemManager.getItemName(item));
-        if (itemInConf == null) return;
+        if(!BmcItemContainer.getInstance().getItems().containsKey(ItemManager.getItemName(item))) {
+            if(!ItemManager.getItemName(item).equals("")){
+                ItemManager.setItemName(item, "");
+                ItemManager.setItemRev(item, 0);
+            }
+            return;
+        }
+        ItemStack itemInConf = BmcItemContainer.getInstance().getItems().get(ItemManager.getItemName(item)).getItemStack();
         if(getItemRev(item).compareTo(getItemRev(itemInConf)) >= 0)return;
         item.setType(itemInConf.getType());
         setItemRev(item, getItemRev(itemInConf));
@@ -166,18 +180,5 @@ public final class ItemManager {
         updateItemLore(item);
     }
 
-    public static ItemStack convertItemSchemeToItemStack(String item){
-        if(item.equals("m.AIR") || item.equals("AIR") || item.equals("null")){
-            return null;
-        } else if(item.startsWith("m.")){
-            if(Material.matchMaterial(item.substring(2)) == null) return null;
-            return new ItemStack(Objects.requireNonNull(Material.matchMaterial(item.substring(2))));
-        } else {
-            if(ItemManager.registeredItems.containsKey(item)){
-                return ItemManager.registeredItems.get(item).clone();
-            } else {
-                return null;
-            }
-        }
-    }
+
 }

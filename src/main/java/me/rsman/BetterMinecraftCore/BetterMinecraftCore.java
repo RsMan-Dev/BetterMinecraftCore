@@ -4,6 +4,7 @@ import me.rsman.BetterMinecraftCore.Managers.*;
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandCompletionsManager;
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager;
 import me.rsman.BetterMinecraftCore.configs.ConfigLoader;
+import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,12 +23,14 @@ public final class BetterMinecraftCore extends JavaPlugin {
 
         ConfigLoader.init();
 
+        BmcCraftContainer.registerCrafts();
+
         DBManager.initConnection();
 
         TasksManager.registerAllTasks();
         ListenersManager.registerAllEvents();
         EnchantManager.registerAllEnchantments();
-        CraftManager.initCrafts();
+        //CraftManager.initCrafts();
 
         pluginLogging.setLevel(Level.SEVERE);
         CommandManager.init();
@@ -46,8 +49,9 @@ public final class BetterMinecraftCore extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        getLogger().info("!aShutting down");
+        getLogger().info("§aShutting down");
         EnchantManager.unRegisterAllEnchantments();
+        getServer().resetRecipes();
     }
 
 

@@ -65,5 +65,6 @@ bmc:
       player_base_attribute_set: the base {attr} Attribute of {player} set to "{val}"
 
       invalid_name_key_pair: the name/key pair is invalid, type it in this format "name.key"
-
-
+      invalid_result: the craft result is not valid, please type registered item, or minecraft id prefixed with "m." (example => "registeredItem" or "m.dirt")
+      need_to_force: if you are changing result, you need to force, just add "force" at the end of your command
+      need_result: you need to give a result if the recipe does not exists

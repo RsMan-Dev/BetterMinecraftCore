@@ -38,7 +38,10 @@ public enum MessageKeys implements MessageKeyProvider {
     PLAYER_ATTRIBUTE,
 
     //crafts
-    INVALID_NAME_KEY_PAIR
+    INVALID_NAME_KEY_PAIR,
+    INVALID_RESULT,
+    NEED_TO_FORCE,
+    NEED_RESULT
     ;
 
     private static final String PREFIX = "bmc";

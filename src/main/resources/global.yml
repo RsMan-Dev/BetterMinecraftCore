@@ -12,8 +12,8 @@ db_password: ""
 #valid placeholders: {attr_name}, {value}
 attribute_display_format: "&7{attr_name}&7: &a+{value}"
 
-#valid placeholders: {value}
-attribute_modifier_display_format: "&6(+{value})"
+#valid placeholders: {value}   (space is required to separate it from number)
+attribute_modifier_display_format: " &6(+{value})"
 
 #valid placeholders: {ench_name}, {value}, {value_int}
 enchant_display_format: "&7{ench_name} {value}"

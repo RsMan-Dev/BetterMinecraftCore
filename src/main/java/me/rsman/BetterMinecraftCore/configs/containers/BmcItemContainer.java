@@ -36,7 +36,7 @@ public class BmcItemContainer {
             }
             BetterMinecraftCore.getInstance().getLogger().info("§bLoaded §6" + keys.size() + " §bitems." );
             if(GlobalConfigContainer.getInstance().isVerbose()){
-                BetterMinecraftCore.getInstance().getLogger().info("§bLoaded  items: §6" + keys );
+                BetterMinecraftCore.getInstance().getLogger().info("§bLoaded items: §6" + keys );
             }
         }
         setInstance(bmcItemContainerInstance);
@@ -44,11 +44,7 @@ public class BmcItemContainer {
 
     public static void save(){
         BetterMinecraftCore.getInstance().getLogger().info("§3Saving BMC items...");
-        BmcItemContainer bmcItemsContainerClone = BmcItemContainer.getInstance().clone();
-        for (Map.Entry<String, BmcItem> item: bmcItemsContainerClone.getItems().entrySet()) {
-            item.getValue().setName(null);
-            bmcItemsContainerClone.getItems().put(item.getKey(), item.getValue());
-        }
+        BmcItemContainer bmcItemsContainerClone = BmcItemContainer.getInstance().cloneForConfig();
         ConfigLoader.saveConfig("items/all", bmcItemsContainerClone);
         BetterMinecraftCore.getInstance().getLogger().info("§bSaved BMC items." );
     }
@@ -65,12 +61,11 @@ public class BmcItemContainer {
         this.items = items;
     }
 
-    @Override
-    public BmcItemContainer clone() {
+    public BmcItemContainer cloneForConfig() {
         BmcItemContainer ic = new BmcItemContainer();
         HashMap<String, BmcItem> itemsClone = new HashMap<>();
         for (Map.Entry<String, BmcItem> itemToClone: items.entrySet()) {
-            itemsClone.put(itemToClone.getKey(), itemToClone.getValue().clone());
+            itemsClone.put(itemToClone.getKey(), itemToClone.getValue().cloneForConfig());
         }
         ic.setItems(itemsClone);
         return ic;

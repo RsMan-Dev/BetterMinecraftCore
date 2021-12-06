@@ -135,10 +135,10 @@ public class BmcItem {
                 '}';
     }
 
-    @Override
-    public BmcItem clone() {
+
+    public BmcItem cloneForConfig() {
         BmcItem i = new BmcItem();
-        i.setName(name);
+        i.setName(null);
         i.setDisplayName(displayName);
         i.setMaterialId(materialId);
         i.setAttributes(attributes);
