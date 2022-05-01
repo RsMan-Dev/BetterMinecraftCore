@@ -20,6 +20,11 @@ object NBT {
         return data
     }
 
+    fun hasMainData(itemMeta: ItemMeta?): Boolean{
+        val namespacedKeyGlobal = NamespacedKey(instance, "mainItemData")
+        return itemMeta!!.persistentDataContainer.get(namespacedKeyGlobal, PersistentDataType.TAG_CONTAINER) != null
+    }
+
     private fun setMainData(itemMeta: ItemMeta, ctn: PersistentDataContainer): ItemMeta {
         val namespacedKeyGlobal = NamespacedKey(instance, "mainItemData")
         itemMeta.persistentDataContainer.set(namespacedKeyGlobal, PersistentDataType.TAG_CONTAINER, ctn)

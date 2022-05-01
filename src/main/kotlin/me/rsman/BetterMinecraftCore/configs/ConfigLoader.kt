@@ -1,11 +1,7 @@
 package me.rsman.BetterMinecraftCore.configs
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore.Companion.instance
-import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer
-import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
-import me.rsman.BetterMinecraftCore.configs.containers.GlobalConfigContainer
-import me.rsman.BetterMinecraftCore.configs.containers.EnchantLangContainer
-import me.rsman.BetterMinecraftCore.configs.containers.AttributeLangContainer
+import me.rsman.BetterMinecraftCore.configs.containers.*
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
 import org.yaml.snakeyaml.DumperOptions
@@ -77,5 +73,6 @@ object ConfigLoader {
         AttributeLangContainer.load()
         EnchantLangContainer.load()
         BmcCraftContainer.load()
+        MessagesLangContainer.load()
     }
 }

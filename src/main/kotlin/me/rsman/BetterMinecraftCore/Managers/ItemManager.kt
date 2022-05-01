@@ -11,10 +11,14 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass
 import me.rsman.BetterMinecraftCore.formatters.LoreFormatter
+import me.rsman.BetterMinecraftCore.utils.NBT.hasMainData
 import org.bukkit.inventory.ItemFlag
 import java.util.ArrayList
 
 object ItemManager {
+    fun isCustom(item: ItemStack?) : Boolean {
+        return hasMainData(item?.itemMeta)
+    }
     fun setItemName(item: ItemStack?, value: String) {
         if (value == "") {
             remove(item!!, "name")
@@ -24,7 +28,7 @@ object ItemManager {
     }
 
     fun getItemName(item: ItemStack?): String {
-        return get(item!!, "name", PersistentDataType.STRING) ?: return ""
+        return if(item != null) get(item, "name", PersistentDataType.STRING) ?: "" else return ""
     }
 
     fun setItemRev(item: ItemStack?, value: Int) {

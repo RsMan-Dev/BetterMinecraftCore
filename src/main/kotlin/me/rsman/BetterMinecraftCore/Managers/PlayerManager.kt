@@ -144,7 +144,7 @@ object PlayerManager {
         }
         val playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH)
         playerMaxHealth?.baseValue = totalAttributes["health"]?.toDouble() ?: 20.0
-        player.health = (totalAttributes["health"]?.toDouble() ?: 20.0).coerceAtMost(player.health + (totalAttributes["strength"]?.toDouble() ?: 0.0) / 200 + 1)
+        if(player.health > 0) player.health = (totalAttributes["health"]?.toDouble() ?: 20.0).coerceAtMost(player.health + (((playerMaxHealth?.baseValue ?: 0.0) * 0.01) * (((totalAttributes["strength"] ?: 0)/100) + 1)))
         player.healthScale = 20.0
         ActionBarManager.updateActionBar(player, totalAttributes, mana)
     }

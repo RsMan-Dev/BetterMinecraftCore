@@ -3,7 +3,16 @@ package me.rsman.BetterMinecraftCore.enums
 import java.util.ArrayList
 
 enum class EAttributes {
-    DAMAGE("damage"), STRENGTH("strength"), INTELLIGENCE("intelligence"), CRIT_CHANCE("critChance", true), CRIT_DAMAGE("critDamage", true), DEFENSE("defense"), HEALTH("health"), ATTACK_SPEED("attackSpeed", true), MANA("mana"), SPEED("speed", true);
+    DAMAGE("damage"),
+    STRENGTH("strength"),
+    INTELLIGENCE("intelligence"),
+    CRIT_CHANCE("critChance", true),
+    CRIT_DAMAGE("critDamage", true),
+    DEFENSE("defense"),
+    HEALTH("health"),
+    ATTACK_SPEED("attackSpeed", true),
+    MANA("mana"),
+    SPEED("speed", true);
 
     val key: String
     val isPercent: Boolean

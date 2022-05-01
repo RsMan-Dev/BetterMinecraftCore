@@ -185,7 +185,7 @@ class BmcItem {
             itemTS.attributes = itemAttrs
             val itemEnchs = HashMap<String, Int>()
             for ((key, value) in item.enchantments) {
-                itemEnchs[EEnchants.getEnumKeyFromKey(key.key.toString().replaceFirst("minecraft:".toRegex(), "")).toString()] = value
+                itemEnchs[EEnchants.getEnumKeyFromKey(key.key.toString().replaceFirst("minecraft:", "")).toString()] = value
             }
             itemTS.enchants = itemEnchs
             itemTS.renamable = if (ItemManager.isRenamable(item)) true else null
