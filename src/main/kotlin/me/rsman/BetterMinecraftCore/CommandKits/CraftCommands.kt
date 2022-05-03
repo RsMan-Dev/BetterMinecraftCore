@@ -14,7 +14,7 @@ class CraftCommands : BaseCommand() {
     // all config wiped out, using config for database data is useless.
     private val commandManager = CommandManager.get()
     @Subcommand("setShaped")
-    @CommandCompletion("@shapedCrafts <result> <resultCount> [force] @nothing")
+    @CommandCompletion("@shapedCrafts @itemOrVanilla <resultCount> [force] @nothing")
     @CommandPermission("hc.craft.set_shaped")
     @Description("{@@bmc.command.description.craft.set_shaped}")
     @Syntax("<name.key> <result> <resultCount> [force]")
@@ -23,7 +23,7 @@ class CraftCommands : BaseCommand() {
     }
 
     @Subcommand("setShapeless")
-    @CommandCompletion("@shapelessCrafts <result> <resultCount> [force] @nothing")
+    @CommandCompletion("@shapelessCrafts @itemOrVanilla <resultCount> [force] @nothing")
     @CommandPermission("hc.craft.set_shapeless")
     @Description("{@@bmc.command.description.craft.set_shapeless}")
     @Syntax("<name.key> <result> <resultCount> [force]")

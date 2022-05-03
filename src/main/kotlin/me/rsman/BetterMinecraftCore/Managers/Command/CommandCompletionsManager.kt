@@ -25,6 +25,14 @@ object CommandCompletionsManager {
             }
             null
         }
+        commandCompletions.registerAsyncCompletion("itemOrVanilla") { c: BukkitCommandCompletionContext ->
+            val sender = c.sender
+            if (sender is Player) {
+                val itemList = setOf("<vanilla_item_ex:_m.ITEM_ID>") + BmcItemContainer.instance!!.items!!.keys
+                return@registerAsyncCompletion ArrayList(itemList)
+            }
+            null
+        }
         commandCompletions.registerAsyncCompletion("attribute") { c: BukkitCommandCompletionContext ->
             val sender = c.sender
             if (sender is Player) {

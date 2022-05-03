@@ -1,5 +1,6 @@
 package me.rsman.BetterMinecraftCore.configs
 
+import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore.Companion.instance
 import me.rsman.BetterMinecraftCore.configs.containers.*
 import org.yaml.snakeyaml.Yaml
@@ -45,6 +46,7 @@ object ConfigLoader {
             options.isPrettyFlow = true
             // Fix below - additional configuration
             options.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+
             val yaml = Yaml(CustomClassLoaderConstructor(ConfigLoader::class.java.classLoader), representer, options)
             val file = getFile(configFile)
             val fileWriter = BufferedWriter(OutputStreamWriter(FileOutputStream(file), StandardCharsets.UTF_8))
@@ -58,7 +60,7 @@ object ConfigLoader {
     val representer: Representer
         get() {
             val representer: Representer = object : Representer() {
-                override fun representJavaBeanProperty(javaBean: Any, property: Property, propertyValue: Any, customTag: Tag): NodeTuple {
+                override fun representJavaBeanProperty(javaBean: Any?, property: Property?, propertyValue: Any?, customTag: Tag?): NodeTuple {
                     // if value of property is null, ignore it.
                     return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag)
                 }
