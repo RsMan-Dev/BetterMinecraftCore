@@ -15,7 +15,7 @@ import java.util.*
 
 object LoreFormatter {
     fun format(item: ItemStack): List<String> {
-        val lore: MutableList<String> = ArrayList(formatAttributesLore(item))
+        var lore: MutableList<String> = ArrayList(formatAttributesLore(item))
         lore.addAll(formatEnchantsLore(item))
 
         //custom lore
@@ -31,6 +31,7 @@ object LoreFormatter {
             lore.add("")
             lore.add("§cUnbreakable")
         }
+        lore = lore.map { loreEl -> PapiManager.parseText(null, loreEl) }.toMutableList()
         return lore
     }
 
@@ -40,7 +41,7 @@ object LoreFormatter {
             val attrVal = ItemManager.getItemAttr(item, attr)
             val attrModifierVal = ItemManager.getItemEnchantAttr(item, attr)
             if (attrVal != 0L || attrModifierVal != 0L) {
-                val percent: Boolean = EAttributes.allKeys.contains(attr)
+                val percent: Boolean = EAttributes.allPercentKeys.contains(attr)
                 var attrTrans = AttributeLangContainer.instance!!.getTranslation(attr)
                 if (attrTrans == null) attrTrans = attr.substring(0, 1).uppercase() + attr.substring(1)
                 attributesLore.add(

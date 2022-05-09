@@ -54,14 +54,26 @@ object ConfigLoader {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        BetterMinecraftCore.instance.logger.info(representer.propertyUtils.isSkipMissingProperties.toString())
     }
 
-    // if value of property is null, ignore it.
     val representer: Representer
         get() {
             val representer: Representer = object : Representer() {
-                override fun representJavaBeanProperty(javaBean: Any?, property: Property?, propertyValue: Any?, customTag: Tag?): NodeTuple {
-                    // if value of property is null, ignore it.
+                override fun representJavaBeanProperty(javaBean: Any?, property: Property?, propertyValue: Any?, customTag: Tag?): NodeTuple? {
+                    when (propertyValue){
+                        null -> return null
+                        is Map<*,*> -> if(propertyValue.size == 0) return null
+                        is HashMap<*,*> -> if(propertyValue.size == 0) return null
+                        is MutableMap<*,*> -> if(propertyValue.size == 0) return null
+                        is Set<*> -> if(propertyValue.size == 0) return null
+                        is MutableSet<*> -> if(propertyValue.size == 0) return null
+                        is List<*> -> if(propertyValue.size == 0) return null
+                        is MutableList<*> -> if(propertyValue.size == 0) return null
+                        is Array<*> -> if(propertyValue.size == 0) return null
+                        is ArrayList<*> -> if(propertyValue.size == 0) return null
+                        is String -> if(propertyValue == "") return null
+                    }
                     return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag)
                 }
             }

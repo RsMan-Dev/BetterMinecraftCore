@@ -16,7 +16,7 @@ object CommandCompletionsManager {
     }
 
     private fun registerCommandCompletions() {
-        val commandCompletions: CommandCompletions<BukkitCommandCompletionContext> = CommandManager.Companion.get()!!.getCommandCompletions()
+        val commandCompletions: CommandCompletions<BukkitCommandCompletionContext> = CommandManager.get()!!.getCommandCompletions()
         commandCompletions.registerAsyncCompletion("item") { c: BukkitCommandCompletionContext ->
             val sender = c.sender
             if (sender is Player) {
@@ -28,7 +28,7 @@ object CommandCompletionsManager {
         commandCompletions.registerAsyncCompletion("itemOrVanilla") { c: BukkitCommandCompletionContext ->
             val sender = c.sender
             if (sender is Player) {
-                val itemList = setOf("<vanilla_item_ex:_m.ITEM_ID>") + BmcItemContainer.instance!!.items!!.keys
+                val itemList: Set<String> = setOf("<vanilla_item_ex:_m.ITEM_ID>") + BmcItemContainer.instance!!.items!!.keys
                 return@registerAsyncCompletion ArrayList(itemList)
             }
             null

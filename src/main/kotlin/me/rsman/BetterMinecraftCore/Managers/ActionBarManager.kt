@@ -16,12 +16,12 @@ object ActionBarManager {
     fun updateActionBar(player: Player, attributes: Map<String, Long>, mana: Long) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
                 *TextComponent.fromLegacyText(
-                        actionBarDisplayFormat!!.replace("&", "§")
+                        PapiManager.parseText(player, actionBarDisplayFormat!!.replace("&", "§")
                                 .replace("{health}", Math.round(player.health).toString() + "")
                                 .replace("{health_max}", attributes["health"].toString() + "")
                                 .replace("{defense}", attributes["defense"].toString() + "")
                                 .replace("{mana}", mana.toString() + "")
-                                .replace("{mana_max}", attributes["mana"].toString() + "")
+                                .replace("{mana_max}", attributes["mana"].toString() + ""))
                 )
         )
     }

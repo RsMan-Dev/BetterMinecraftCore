@@ -4,3 +4,5 @@ main: me.rsman.BetterMinecraftCore.BetterMinecraftCore
 api-version: 1.16
 authors: [ RsMan ]
 description: test
+
+softdepend: [PlaceholderAPI]

@@ -27,7 +27,7 @@ class ItemCommands : BaseCommand() {
     private val commandManager = CommandManager.get()
     @Subcommand("setAttribute")
     @CommandCompletion("@attribute <value> @nothing")
-    @CommandPermission("hc.item.attribute.set")
+    @CommandPermission("bmc.item.attribute.set")
     @Description("{@@bmc.command.description.item.attribute.set}")
     @Syntax("<attribute> <value>")
     fun onAddAttr(playerSender: Player, @Values("@attribute") attr: String?, value: Int) {
@@ -44,7 +44,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setEnchantment")
     @CommandCompletion("@enchantment <level> @nothing")
-    @CommandPermission("hc.item.enchantment.set")
+    @CommandPermission("bmc.item.enchantment.set")
     @Description("{@@bmc.command.description.item.enchantment.set}")
     @Syntax("<enchantment> <level>")
     fun onAddEnch(playerSender: Player, @Values("@enchantment") ench: String?, level: Int) {
@@ -61,7 +61,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("removeAttribute")
     @CommandCompletion("@attribute @nothing")
-    @CommandPermission("hc.item.attribute.remove")
+    @CommandPermission("bmc.item.attribute.remove")
     @Description("{@@bmc.command.description.item.attribute.remove}")
     @Syntax("<attribute>")
     fun onRemoveAttr(playerSender: Player, @Values("@attribute") attr: String?) {
@@ -78,7 +78,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("removeEnchantment")
     @CommandCompletion("@enchantment @nothing")
-    @CommandPermission("hc.item.enchantment.remove")
+    @CommandPermission("bmc.item.enchantment.remove")
     @Description("{@@bmc.command.description.item.enchantment.remove}")
     @Syntax("<enchantment>")
     fun onRemoveEnch(playerSender: Player, @Values("@enchantment") ench: String?) {
@@ -95,7 +95,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setDisplayName")
     @CommandCompletion("<name/null> @nothing")
-    @CommandPermission("hc.item.name.set")
+    @CommandPermission("bmc.item.name.set")
     @Description("{@@bmc.command.description.item.name.set}")
     @Syntax("<name/null>")
     fun onSetName(playerSender: Player, name: String) {
@@ -117,7 +117,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setMaterialData")
     @CommandCompletion("<id> @nothing")
-    @CommandPermission("hc.item.material_data.set")
+    @CommandPermission("bmc.item.material_data.set")
     @Description("{@@bmc.command.description.item.material_data.set}")
     @Syntax("<id>")
     fun onSetMaterialData(playerSender: Player, id: Int) {
@@ -135,7 +135,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setRev")
     @CommandCompletion("<rev> @nothing")
-    @CommandPermission("hc.item.rev.set")
+    @CommandPermission("bmc.item.rev.set")
     @Description("{@@bmc.command.description.item.rev.set}")
     @Syntax("<rev>")
     fun onSetRev(playerSender: Player, rev: Int) {
@@ -153,7 +153,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("get")
     @CommandCompletion("@item [amount] @nothing")
-    @CommandPermission("hc.item.give.self")
+    @CommandPermission("bmc.item.give.self")
     @Description("{@@bmc.command.description.item.give.self}")
     @Syntax("<item_key> [amount]")
     fun onGet(playerSender: Player, @Values("@item") itemName: String?, @Optional number: Int?) {
@@ -180,7 +180,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("give")
     @CommandCompletion("@item @players [amount] @nothing")
-    @CommandPermission("hc.item.give.other")
+    @CommandPermission("bmc.item.give.other")
     @Description("{@@bmc.command.description.item.give.other}")
     @Syntax("<item_key> <player> [amount]")
     fun onGive(@Optional playerSender: Player?, @Values("@item") itemName: String?, player: OnlinePlayer, @Optional number: Int?) {
@@ -207,7 +207,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("save")
     @CommandCompletion("<item_key> @nothing")
-    @CommandPermission("hc.item.save")
+    @CommandPermission("bmc.item.save")
     @Description("{@@bmc.command.description.item.save}")
     @Syntax("[item_key]")
     fun onSave(playerSender: Player, @Optional itemName: String?) {
@@ -239,7 +239,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("delete")
     @CommandCompletion("@item @nothing")
-    @CommandPermission("hc.item.delete")
+    @CommandPermission("bmc.item.delete")
     @Description("{@@bmc.command.description.item.delete}")
     @Syntax("<item_key>")
     fun onDelete(playerSender: Player?, @Values("@item") itemName: String?) {
@@ -251,7 +251,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setLore")
     @CommandCompletion("<line> <text/null> @nothing")
-    @CommandPermission("hc.item.set_lore")
+    @CommandPermission("bmc.item.set_lore")
     @Description("{@@bmc.command.description.item.set_lore}")
     @Syntax("<line> <text/null>")
     fun onLoreSet(playerSender: Player, line: Int, text: String?) {
@@ -268,7 +268,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("addLore")
     @CommandCompletion("<text/null> @nothing")
-    @CommandPermission("hc.item.add_lore")
+    @CommandPermission("bmc.item.add_lore")
     @Description("{@@bmc.command.description.item.add_lore}")
     @Syntax("<text/null>")
     fun onLoreAdd(playerSender: Player, text: String?) {
@@ -285,7 +285,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setUnbreakable")
     @CommandCompletion("<true/false> @nothing")
-    @CommandPermission("hc.item.set_unbreakable")
+    @CommandPermission("bmc.item.set_unbreakable")
     @Description("{@@bmc.command.description.item.set_unbreakable}")
     @Syntax("<true/false>")
     fun onSetUnbreakable(playerSender: Player, state: Boolean) {
@@ -302,7 +302,7 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("setRenamable")
     @CommandCompletion("<true/false> @nothing")
-    @CommandPermission("hc.item.set_renamable")
+    @CommandPermission("bmc.item.set_renamable")
     @Description("{@@bmc.command.description.item.set_renamable}")
     @Syntax("<true/false>")
     fun onSetRenamable(playerSender: Player, state: Boolean) {
@@ -318,9 +318,17 @@ class ItemCommands : BaseCommand() {
 
     @Subcommand("log")
     @CommandCompletion("@nothing")
-    @CommandPermission("hc.item.log")
+    @CommandPermission("bmc.item.log")
     @Description("{@@bmc.command.description.item.log}")
     fun onLog(playerSender: Player) {
+        instance.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
+    }
+
+    @Subcommand("setIaDropsFromBlock")
+    @CommandCompletion("@iaCustomBlockId")
+    @CommandPermission("bmc.item.log")
+    @Description("{@@bmc.command.description.item.log}")
+    fun onSetDropsFromBlock(playerSender: Player) {
         instance.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
     }
 }

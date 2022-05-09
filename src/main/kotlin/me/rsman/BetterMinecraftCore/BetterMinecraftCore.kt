@@ -34,6 +34,7 @@ class BetterMinecraftCore : JavaPlugin() {
             PlayerManager.getBaseAttributes(player!!.uniqueId.toString(), true)
             PlayerManager.alterPlayerAttributesWithEquippedStuff(player)
         }
+        PapiManager.registerExpansion()
         logger.info("§aStarted")
     }
 
@@ -48,5 +49,7 @@ class BetterMinecraftCore : JavaPlugin() {
         @JvmStatic
         lateinit var instance: BetterMinecraftCore
             private set
+
+        var isItemsAdderInstalled = false
     }
 }

@@ -15,7 +15,7 @@ class CraftCommands : BaseCommand() {
     private val commandManager = CommandManager.get()
     @Subcommand("setShaped")
     @CommandCompletion("@shapedCrafts @itemOrVanilla <resultCount> [force] @nothing")
-    @CommandPermission("hc.craft.set_shaped")
+    @CommandPermission("bmc.craft.set_shaped")
     @Description("{@@bmc.command.description.craft.set_shaped}")
     @Syntax("<name.key> <result> <resultCount> [force]")
     fun onSetShaped(playerSender: Player?, nameKeyPair: String?, @Optional result: String?, @Optional resultCount: Int?, @Optional force: String?) {
@@ -24,7 +24,7 @@ class CraftCommands : BaseCommand() {
 
     @Subcommand("setShapeless")
     @CommandCompletion("@shapelessCrafts @itemOrVanilla <resultCount> [force] @nothing")
-    @CommandPermission("hc.craft.set_shapeless")
+    @CommandPermission("bmc.craft.set_shapeless")
     @Description("{@@bmc.command.description.craft.set_shapeless}")
     @Syntax("<name.key> <result> <resultCount> [force]")
     fun onSetShapeless(playerSender: Player?, nameKeyPair: String?, @Optional result: String?, @Optional resultCount: Int?, @Optional force: String?) {

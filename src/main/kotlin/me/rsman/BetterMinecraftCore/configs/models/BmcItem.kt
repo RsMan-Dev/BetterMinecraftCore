@@ -18,6 +18,9 @@ class BmcItem {
     private var unbreakable: Boolean? = null
     private var renamable: Boolean? = null
     private var rev = 0
+    private var dropsFromBlock: List<String>? = null
+    private var dropsFromEntity: List<String>? = null
+
     fun getName(): String? {
         return name
     }
@@ -112,20 +115,18 @@ class BmcItem {
         this.rev = rev
     }
 
+    fun getDropsFromBlock(): List<String>? = dropsFromBlock
+
+    fun setDropsFromBlock(dropsFromBlock: List<String>?){this.dropsFromBlock = dropsFromBlock}
+
+    fun getDropsFromEntity(): List<String>? = dropsFromEntity
+
+    fun setDropsFromEntity(dropsFromEntity: List<String>?){this.dropsFromEntity = dropsFromEntity}
+
     override fun toString(): String {
-        return "BmcItem{" +
-                "name='" + name + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", materialId=" + materialId +
-                ", material='" + material + '\'' +
-                ", lore=" + lore +
-                ", attributes=" + attributes +
-                ", enchants=" + enchants +
-                ", unbreakable=" + unbreakable +
-                ", renamable=" + renamable +
-                ", rev=" + rev +
-                '}'
+        return "BmcItem(name=$name, displayName=$displayName, materialId=$materialId, material=$material, lore=$lore, attributes=$attributes, enchants=$enchants, unbreakable=$unbreakable, renamable=$renamable, rev=$rev, iaDropsFromBlock=$dropsFromBlock, iaDropsFromEntity=$dropsFromEntity)"
     }
+
 
     fun cloneForConfig(): BmcItem {
         val i = BmcItem()
@@ -139,6 +140,8 @@ class BmcItem {
         i.setUnbreakable(unbreakable)
         i.setRenamable(renamable)
         i.setRev(rev)
+        i.setDropsFromBlock(dropsFromBlock)
+        i.setDropsFromEntity(dropsFromEntity)
         return i
     }
 

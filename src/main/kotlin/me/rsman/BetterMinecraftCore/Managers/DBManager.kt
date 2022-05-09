@@ -31,9 +31,13 @@ object DBManager {
             playerBaseAttrDao = DaoManager.createDao(connectionSource, PlayerBaseAttr::class.java)
             BetterMinecraftCore.instance.logger.info("§bDB connected!")
         } catch (throwables: SQLException) {
-            //throwables.printStackTrace();
+            BetterMinecraftCore.instance.logger.severe(throwables.toString())
             BetterMinecraftCore.instance.logger.warning("§4Database connection not initialized, please setup config for mariaDB database, disabling plugin")
-            BetterMinecraftCore.instance.server.pluginManager.disablePlugin(BetterMinecraftCore.instance)
+
+            //let plugin finish instanciation to avoid null crash
+            BetterMinecraftCore.instance.server.scheduler.runTaskLater(BetterMinecraftCore.instance, Runnable {
+                BetterMinecraftCore.instance.server.pluginManager.disablePlugin(BetterMinecraftCore.instance)
+             }, 0)
         }
     }
 }
