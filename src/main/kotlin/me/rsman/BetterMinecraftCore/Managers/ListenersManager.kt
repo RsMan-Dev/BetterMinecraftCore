@@ -8,18 +8,19 @@ import me.rsman.BetterMinecraftCore.Listeners.Enchantments.TelekinesisListener
 object ListenersManager {
     fun registerAllEvents() {
         val listeners = arrayOf(
-                DamageListener(),
-                PlayerConnectListener(),
-                EquipmentListener(),
-                BlockListener(),
-                CraftingListener(),
-                EnchantListener(),
-                AnvilListener(),  //enchantments
-                AimingListener(),
-                TelekinesisListener(),  // Commands listener
-                CraftCommandListener(),
-                GrindstoneListener()
-        )
+            DamageListener(),
+            PlayerConnectListener(),
+            EquipmentListener(),
+            BlockListener(),
+            CraftingListener(),
+            EnchantListener(),
+            AnvilListener(),  //enchantments
+            AimingListener(),
+            TelekinesisListener(),  // Commands listener
+            CraftCommandListener(),
+            GrindstoneListener(),
+        ) + ItemsAdderManager.getListeners() +
+            MythicMobsManager.getListeners()
         for (listener in listeners) {
             BetterMinecraftCore.instance.server.pluginManager.registerEvents(listener, BetterMinecraftCore.instance)
         }

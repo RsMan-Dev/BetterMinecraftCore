@@ -1,16 +1,12 @@
 package me.rsman.BetterMinecraftCore
 
+import me.rsman.BetterMinecraftCore.Managers.*
 import org.bukkit.plugin.java.JavaPlugin
 import me.rsman.BetterMinecraftCore.configs.ConfigLoader
 import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer
-import me.rsman.BetterMinecraftCore.Managers.DBManager
-import me.rsman.BetterMinecraftCore.Managers.TasksManager
-import me.rsman.BetterMinecraftCore.Managers.ListenersManager
-import me.rsman.BetterMinecraftCore.Managers.EnchantManager
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandCompletionsManager
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager
 import org.bukkit.entity.Player
-import me.rsman.BetterMinecraftCore.Managers.PlayerManager
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -49,7 +45,5 @@ class BetterMinecraftCore : JavaPlugin() {
         @JvmStatic
         lateinit var instance: BetterMinecraftCore
             private set
-
-        var isItemsAdderInstalled = false
     }
 }

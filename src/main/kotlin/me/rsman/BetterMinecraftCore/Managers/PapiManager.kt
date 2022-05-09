@@ -5,7 +5,7 @@ import org.bukkit.entity.Player
 
 object PapiManager {
     val isPapiInstalled
-        get() = BetterMinecraftCore.instance.server.pluginManager.getPlugin(PlaceholderAPI::class.java.simpleName) != null
+        get() = BetterMinecraftCore.instance.server.pluginManager.getPlugin("PlaceholderApi") != null
 
     fun parseText(player: Player?, text: String) : String {
         return if (isPapiInstalled)  PlaceholderAPI.setPlaceholders(player, text) else text

@@ -1,16 +1,16 @@
-package me.rsman.BetterMinecraftCore.Listeners
+package me.rsman.BetterMinecraftCore.Listeners.ItemsAdder
 
+import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.BlockBreakEvent
 import kotlin.random.Random
 
-class BlockListener : Listener{
+class ItemsAdderCustomBlockBreakListener: Listener {
     @EventHandler
-    fun onBreakBlock(event: BlockBreakEvent){
+    fun onCustomBlockBreak(event: CustomBlockBreakEvent) {
         val player = event.player
-        ItemManager.blockLootTable["m." + event.block.type.name]?.forEach {
+        ItemManager.blockLootTable["ia." + event.namespacedID.split(":")[1]]?.forEach {
             val stack = it.second.itemStack
             stack.amount = if (it.first.minimum == it.first.maximum)
                 it.first.minimum

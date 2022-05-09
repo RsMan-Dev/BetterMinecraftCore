@@ -6,15 +6,17 @@ enum class CoreSourceFrom{
     Vanilla
 }
 
-data class ItemDropPattern(val id: String, val minimum: Int, val maximum: Int, val chance: Double, val sourceFrom: CoreSourceFrom){
+data class ItemDropPattern(val id: String, val patternId: String, val minimum: Int, val maximum: Int, val chance: Double, val sourceFrom: CoreSourceFrom){
     companion object{
         fun parsePattern(input: String): ItemDropPattern?{
             try{
                 val splitted = input.split(" ")
                 if(splitted.size > 3) return null
                 var itemId: String
+                var patternId: String
                 var sourceFrom: CoreSourceFrom
                 with(splitted[0]){
+                    patternId = toString()
                     when{
                         startsWith("m.") -> {
                             itemId = substring(2)
@@ -48,7 +50,7 @@ data class ItemDropPattern(val id: String, val minimum: Int, val maximum: Int, v
                 if(splitted.size > 2){
                     chance = splitted[2].toDouble()
                 }
-                return ItemDropPattern(itemId, minimum?:1, maximum?:1, chance?:1.0, sourceFrom)
+                return ItemDropPattern(itemId, patternId, minimum?:1, maximum?:1, chance?:1.0, sourceFrom)
             }catch(e:Exception){
                 return null
             }

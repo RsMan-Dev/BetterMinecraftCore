@@ -5,4 +5,4 @@ api-version: 1.16
 authors: [ RsMan ]
 description: test
 
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, ItemsAdder, MythicMobs]

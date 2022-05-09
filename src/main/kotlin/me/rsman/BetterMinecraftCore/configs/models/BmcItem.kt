@@ -171,6 +171,8 @@ class BmcItem {
             }
             itemTR.itemMeta = itemTRMeta
             ItemManager.updateItemLore(itemTR)
+            dropsFromBlock?.forEach { ItemManager.addDrop(itemTR, it, "block") }
+            dropsFromEntity?.forEach { ItemManager.addDrop(itemTR, it, "entity") }
             return itemTR
         }
 
@@ -198,6 +200,8 @@ class BmcItem {
                 itemTS.unbreakable = if (im.isUnbreakable) true else null
             }
             itemTS.rev = ItemManager.getItemRev(item)
+            itemTS.dropsFromBlock = ItemManager.getDrops(item, "block")
+            itemTS.dropsFromEntity = ItemManager.getDrops(item, "entity")
             return itemTS
         }
     }

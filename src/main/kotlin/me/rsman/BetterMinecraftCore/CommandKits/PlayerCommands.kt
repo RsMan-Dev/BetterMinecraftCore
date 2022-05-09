@@ -17,7 +17,7 @@ class PlayerCommands : BaseCommand() {
     @Subcommand("getAttribute")
     @CommandCompletion("@attribute @players")
     @CommandPermission("bmc.player.attribute.get")
-    @Description("{@@bmc.command.description.attribute.get}")
+    @Description("{@@bmc.command.description.player.attribute.get}")
     @Syntax("<attr> <player>")
     fun onGetAttr(playerSender: Player?, @Values("@attribute") attr: String?, @Optional @Values("@players") player: OnlinePlayer?) {
         val playerChecked = if (player != null) player.getPlayer() else playerSender!!
@@ -28,7 +28,7 @@ class PlayerCommands : BaseCommand() {
     @Subcommand("setBaseAttribute")
     @CommandCompletion("@attribute <value> @players")
     @CommandPermission("bmc.player.attribute.set")
-    @Description("{@@bmc.command.description.attribute.set}")
+    @Description("{@@bmc.command.description.player.attribute.set}")
     @Syntax("<attr> <value> <player>")
     fun onSetBaseAttr(playerSender: Player?, @Values("@attribute") attr: String?, value: Long, @Optional @Values("@players") player: OnlinePlayer?) {
         val playerChecked = if (player != null) player.getPlayer() else playerSender!!

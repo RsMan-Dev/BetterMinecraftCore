@@ -17,16 +17,15 @@ class PapiExpansion(val plugin: BetterMinecraftCore): PlaceholderExpansion() {
     override fun persist() = true
 
     override fun onRequest(player: OfflinePlayer?, params: String): String? {
-        if(player != null && player.player != null){
-            val player = player.player ?: return null
-            val attrs: Map<String, Long> = PlayerManager.getAttributes(player.uniqueId.toString())
-            for(attr in attrs.entries) if(params.lowercase() == attr.key)  return attr.value.toString()
-            if(params.lowercase() == "health_current" && player.isOnline && player.player != null)
-                return player.player!!.health.toString()
-            if(params.lowercase() == "health_current_rounded" && player.isOnline && player.player != null)
-                return player.player!!.health.roundToInt().toString()
-            if(params.lowercase() == "mana_current" && player.isOnline && player.player != null)
-                return PlayerManager.playersAttributes[player.uniqueId.toString()]?.get("currentMana")?.toString()
+        val player = player?.player ?: return null
+        val attrs: Map<String, Long> = PlayerManager.getAttributes(player.uniqueId.toString())
+        for(attr in attrs.entries) if(params.lowercase() == attr.key)  return attr.value.toString()
+        if(player.isOnline && player.player != null){
+            when(params.lowercase()){
+                "health_current" -> return player.player!!.health.toString()
+                "health_current_rounded" -> return player.player!!.health.roundToInt().toString()
+                "mana_current" -> return PlayerManager.playersAttributes[player.uniqueId.toString()]?.get("currentMana")?.toString()
+            }
         }
         return null
     }

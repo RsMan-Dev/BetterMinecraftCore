@@ -8,6 +8,5 @@ import org.bukkit.event.Listener
 class ItemsAdderLoadListener : Listener {
     @EventHandler
     fun onLoaded(event: ItemsAdderLoadDataEvent){
-        BetterMinecraftCore.isItemsAdderInstalled = true
     }
 }

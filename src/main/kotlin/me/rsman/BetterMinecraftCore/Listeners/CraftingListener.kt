@@ -11,6 +11,7 @@ import org.bukkit.GameMode
 import org.bukkit.event.inventory.PrepareItemCraftEvent
 import org.bukkit.inventory.CraftingInventory
 import me.rsman.BetterMinecraftCore.Managers.CraftManager
+import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.CraftItemEvent
 import org.bukkit.event.EventHandler
@@ -24,6 +25,7 @@ class CraftingListener : Listener {
     fun onCraftChange(e: PrepareItemCraftEvent) {
         val inv = e.inventory
         val matrix = e.inventory.matrix
+        if(e.inventory.result != null)ItemManager.updateItemLore(e.inventory.result!!)
         val ingredientMatrix: Array<ItemStack?>?
         if (e.recipe is ShapedRecipe) {
             ingredientMatrix = CraftManager.convertIngredientMapToMatrix(inv.matrix, (Objects.requireNonNull(inv.recipe) as ShapedRecipe).ingredientMap)

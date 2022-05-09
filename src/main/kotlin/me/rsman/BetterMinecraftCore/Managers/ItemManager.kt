@@ -12,6 +12,7 @@ import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass
+import me.rsman.BetterMinecraftCore.configs.models.BmcItem
 import me.rsman.BetterMinecraftCore.formatters.LoreFormatter
 import me.rsman.BetterMinecraftCore.interfaces.CoreSourceFrom
 import me.rsman.BetterMinecraftCore.interfaces.ItemDropPattern
@@ -21,6 +22,9 @@ import org.bukkit.inventory.ItemFlag
 import java.util.ArrayList
 
 object ItemManager {
+    val blockLootTable = mutableMapOf<String, MutableList<Pair<ItemDropPattern, BmcItem>>>()
+    val entityLootTable = mutableMapOf<String, MutableList<Pair<ItemDropPattern, BmcItem>>>()
+
     fun isCustom(item: ItemStack?) : Boolean {
         return hasMainData(item?.itemMeta)
     }
@@ -201,28 +205,18 @@ object ItemManager {
     fun addDrop(item: ItemStack?, pattern: String, source: String){
         if(!listOf("block", "entity").contains(source)) return
         if(item == null || pattern.contains(",")) return
-        val drops = getDrops(item, source)?.toMutableList() ?: return
+        val drops = getDrops(item, source)?.toMutableList() ?: mutableListOf()
         val parsed = ItemDropPattern.parsePattern(pattern) ?: return
-        if(
-                when(parsed.sourceFrom){
-                    CoreSourceFrom.Vanilla -> Material.values().map { it.name }.contains(parsed.id)
-                    CoreSourceFrom.ItemsAdder -> BetterMinecraftCore.isItemsAdderInstalled && ItemsAdder.getAllItems().map { it.id }.contains(parsed.id)
-                    CoreSourceFrom.MythicMobs -> Material.values().map { it.name }.contains(parsed.id)
-                }
-        ){
-            drops += pattern
-        } else {
-            return
-        }
+        drops += pattern
         set(item, "drops_from_$source", PersistentDataType.STRING, drops.joinToString(","))
     }
 
     fun removeDrop(item: ItemStack?, pattern: String, source: String){
         if(!listOf("block", "entity").contains(source)) return
         if(item == null || pattern.contains(",")) return
-        val drops = getDrops(item, source)?.toMutableList() ?: return
+        val drops = getDrops(item, source)?.toMutableList() ?: mutableListOf()
         for (drop in drops){
-            if(drop.startsWith(pattern)) drops.remove(drop)
+            if(drop.split(" ")[0] == pattern.split(" ")[0]) drops.remove(drop)
         }
         set(item, "drops_from_$source", PersistentDataType.STRING, drops.joinToString(","))
     }

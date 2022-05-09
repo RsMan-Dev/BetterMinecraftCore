@@ -28,6 +28,7 @@ import me.rsman.BetterMinecraftCore.configs.ConfigLoader
 import me.rsman.BetterMinecraftCore.configs.containers.GlobalConfigContainer
 import me.rsman.BetterMinecraftCore.configs.containers.EnchantLangContainer
 import me.rsman.BetterMinecraftCore.configs.containers.AttributeLangContainer
+import me.rsman.BetterMinecraftCore.interfaces.ItemDropPattern
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
 import java.io.FileInputStream
@@ -68,6 +69,26 @@ class BmcItemContainer {
                     item!!.setName(key)
                     bmcItemContainerInstance.items!![key] = item
                     keys.add(key)
+                    item.getDropsFromBlock()?.forEach { d ->
+                        val pat = ItemDropPattern.parsePattern(d)
+                        if(pat != null){
+                            if(ItemManager.blockLootTable[pat.patternId] == null){
+                                ItemManager.blockLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
+                            } else {
+                                ItemManager.blockLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
+                            }
+                        }
+                    }
+                    item.getDropsFromEntity()?.forEach { d ->
+                        val pat = ItemDropPattern.parsePattern(d)
+                        if(pat != null){
+                            if(ItemManager.entityLootTable[pat.patternId] == null){
+                                ItemManager.entityLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
+                            } else {
+                                ItemManager.entityLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
+                            }
+                        }
+                    }
                 }
                 BetterMinecraftCore.instance.logger.info("§bLoaded §6" + keys.size + " §bitems.")
                 if (GlobalConfigContainer.instance?.isVerbose == true) {

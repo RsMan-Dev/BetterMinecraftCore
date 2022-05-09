@@ -32,8 +32,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<attribute> <value>")
     fun onAddAttr(playerSender: Player, @Values("@attribute") attr: String?, value: Int) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -49,8 +49,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<enchantment> <level>")
     fun onAddEnch(playerSender: Player, @Values("@enchantment") ench: String?, level: Int) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -66,8 +66,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<attribute>")
     fun onRemoveAttr(playerSender: Player, @Values("@attribute") attr: String?) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -83,8 +83,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<enchantment>")
     fun onRemoveEnch(playerSender: Player, @Values("@enchantment") ench: String?) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -100,8 +100,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<name/null>")
     fun onSetName(playerSender: Player, name: String) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -122,8 +122,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<id>")
     fun onSetMaterialData(playerSender: Player, id: Int) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -141,8 +141,8 @@ class ItemCommands : BaseCommand() {
     fun onSetRev(playerSender: Player, rev: Int) {
         var rev = rev
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -213,8 +213,8 @@ class ItemCommands : BaseCommand() {
     fun onSave(playerSender: Player, @Optional itemName: String?) {
         var itemName = itemName
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -256,8 +256,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<line> <text/null>")
     fun onLoreSet(playerSender: Player, line: Int, text: String?) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -273,8 +273,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<text/null>")
     fun onLoreAdd(playerSender: Player, text: String?) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -290,8 +290,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<true/false>")
     fun onSetUnbreakable(playerSender: Player, state: Boolean) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -307,8 +307,8 @@ class ItemCommands : BaseCommand() {
     @Syntax("<true/false>")
     fun onSetRenamable(playerSender: Player, state: Boolean) {
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
-        val item = Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand
-        if (item.type == Material.AIR || item.itemMeta == null) {
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
@@ -324,11 +324,129 @@ class ItemCommands : BaseCommand() {
         instance.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
     }
 
-    @Subcommand("setIaDropsFromBlock")
-    @CommandCompletion("@iaCustomBlockId")
-    @CommandPermission("bmc.item.log")
-    @Description("{@@bmc.command.description.item.log}")
-    fun onSetDropsFromBlock(playerSender: Player) {
-        instance.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
+    @Subcommand("addDropBlockSource")
+    @CommandCompletion("@blockDropSource [min_count] [max_count] [chance(between_0_and_1)] @nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.add_block}")
+    @Syntax("<block_pattern> [min_count] [max_count] [chance(between_0_and_1)]")
+    fun onAddDropBlockSource(playerSender: Player, @Values("@blockDropSource") blockPattern: String, @Optional minCount: Int?, @Optional maxCount: Int?, @Optional chance: Double) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.addDrop(item, "$blockPattern $minCount-$maxCount $chance", "block")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_SET)
+    }
+
+    @Subcommand("removeDropBlockSource")
+    @CommandCompletion("@blockDropSource @nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.remove_block}")
+    @Syntax("<block_pattern>")
+    fun onRemoveDropBlockSource(playerSender: Player, @Values("@blockDropSource") blockPattern: String) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.removeDrop(item, blockPattern, "block")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_REMOVED)
+    }
+
+    @Subcommand("removeAllDropBlockSource")
+    @CommandCompletion("@nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.remove_all_block}")
+    @Syntax("")
+    fun onRemoveAllDropBlockSource(playerSender: Player) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.removeAllDrops(item, "block")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_REMOVED)
+    }
+
+    @Subcommand("getAllDropBlockSource")
+    @CommandCompletion("@nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.get_all_block}")
+    @Syntax("")
+    fun onGetAllDropBlockSource(playerSender: Player) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", ItemManager.getDrops(item, "block")?.joinToString(",") ?: "null")
+    }
+
+    @Subcommand("addDropEntitySource")
+    @CommandCompletion("@entityDropSource [min_count] [max_count] [chance(between_0_and_1)] @nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.add_entity}")
+    @Syntax("<block_pattern> [min_count] [max_count] [chance(between_0_and_1)]")
+    fun onAddDropEntitySource(playerSender: Player, @Values("@entityDropSource") blockPattern: String, @Optional minCount: Int?, @Optional maxCount: Int?, @Optional chance: Double) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.addDrop(item, "$blockPattern $minCount-$maxCount $chance", "entity")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_SET)
+    }
+
+    @Subcommand("removeDropEntitySource")
+    @CommandCompletion("@entityDropSource @nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.remove_entity}")
+    @Syntax("<block_pattern>")
+    fun onRemoveDropEntitySource(playerSender: Player, @Values("@entityDropSource") blockPattern: String) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.removeDrop(item, blockPattern, "entity")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_REMOVED)
+    }
+
+    @Subcommand("removeAllDropEntitySource")
+    @CommandCompletion("@nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.remove_all_entity}")
+    @Syntax("")
+    fun onRemoveAllDropEntitySource(playerSender: Player) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        ItemManager.removeAllDrops(item, "entity")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_REMOVED)
+    }
+
+    @Subcommand("getAllDropEntitySource")
+    @CommandCompletion("@nothing")
+    @CommandPermission("bmc.item.drop_source")
+    @Description("{@@bmc.command.description.item.drop_source.get_all_entity}")
+    @Syntax("")
+    fun onGetAllEntityBlockSource(playerSender: Player) {
+        val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
+        val item = playerSender.equipment?.itemInMainHand
+        if (item?.type == Material.AIR || item?.itemMeta == null) {
+            issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
+            return
+        }
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", ItemManager.getDrops(item, "entity")?.joinToString(",") ?: "null")
     }
 }

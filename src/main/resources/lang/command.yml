@@ -29,6 +29,15 @@ bmc:
         add_lore: Add item lore line
         set_unbreakable: Set item unbreakable or not
         set_renamable: Set item renamable or not in anvil
+        drop_source:
+          add_block: Add block drop source for item. (must be saved to be effective.)
+          remove_block: Remove block drop source for item. (must be saved to be effective.)
+          remove_all_block: Remove all block drop sources for item. (must be saved to be effective.)
+          get_all_block: Display all block drop source for item. (must be saved to be effective.)
+          add_entity: Add block drop source for item. (must be saved to be effective.)
+          remove_entity: Remove block drop source for item. (must be saved to be effective.)
+          remove_all_entity: Remove all block drop sources for item. (must be saved to be effective.)
+          get_all_entity: Display all block drop source for item. (must be saved to be effective.)
       player:
         attribute:
           get: Get player attribute by attribute name
@@ -60,6 +69,10 @@ bmc:
       item_lore_set: Set lore line {line} to {text}
       item_unbreakable_set: Set item unbreakable state to {state}
       item_renamable_set: Set item renamable state to {state}
+      item_drop_source_set: Item drop source set!
+      item_drop_source_removed: Item drop source removed!
+      item_drop_source_all_removed: Item drop sources removed!
+      item_drop_sources_get: Item drop sources are {sources}
 
       player_attribute: the {attr} Attribute of {player} has for value "{val}"
       player_base_attribute_set: the base {attr} Attribute of {player} set to "{val}"

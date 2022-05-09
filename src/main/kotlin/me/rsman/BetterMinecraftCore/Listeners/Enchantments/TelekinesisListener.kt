@@ -25,6 +25,9 @@ class TelekinesisListener : Listener {
                 !inv.itemInMainHand.enchantments.containsKey(Telekinesis.enchant) || player.gameMode == GameMode.SPECTATOR || player.gameMode == GameMode.CREATIVE ||
                 block.state is Container) return
         val drops = block.getDrops(inv.itemInMainHand)
+        player.giveExp(event.expToDrop)
+        player.sendExperienceChange(player.exp, player.level)
+        event.expToDrop = 0
         event.isDropItems = false
         if (drops.isEmpty()) return
         val itemsNotAdded: Map<Int, ItemStack> = inv.addItem(drops.iterator().next())
@@ -49,6 +52,9 @@ class TelekinesisListener : Listener {
         if (inv.itemInMainHand.type == Material.AIR ||
                 !inv.itemInMainHand.enchantments.containsKey(Telekinesis.enchant) || player.gameMode == GameMode.SPECTATOR || player.gameMode == GameMode.CREATIVE) return
         val drops: Collection<ItemStack> = event.drops
+        player.giveExp(event.droppedExp)
+        player.sendExperienceChange(player.exp, player.level)
+        event.droppedExp = 0
         if (drops.isEmpty()) return
         val itemsNotAdded: Map<Int, ItemStack> = inv.addItem(drops.iterator().next())
         event.drops.clear()
