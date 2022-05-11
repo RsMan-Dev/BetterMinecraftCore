@@ -1,16 +1,16 @@
-package me.rsman.BetterMinecraftCore.Listeners.Enchantments
+package me.rsman.BetterMinecraftCore.Listeners
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Enchantments.Aiming
-import org.bukkit.entity.Player
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager
-import org.bukkit.event.entity.EntityShootBowEvent
-import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityShootBowEvent
+import org.bukkit.scheduler.BukkitRunnable
 
-class AimingListener : Listener {
+class ArrowShotListener: Listener {
     @EventHandler
     fun onShoot(event: EntityShootBowEvent) {
         val arrow = event.projectile

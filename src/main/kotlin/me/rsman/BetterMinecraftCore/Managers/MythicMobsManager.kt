@@ -9,7 +9,7 @@ object MythicMobsManager {
         get() = BetterMinecraftCore.instance.server.pluginManager.getPlugin("MythicMobs") != null
 
 
-    fun getListeners() : List<Listener> = listOf(
+    fun getListeners() : List<Listener> = if(isMythicMobsInstalled) listOf(
             MythicMobsMobKillDropListener()
-    )
+    ) else listOf()
 }

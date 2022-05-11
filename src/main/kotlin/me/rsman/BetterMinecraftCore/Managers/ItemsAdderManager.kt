@@ -11,8 +11,8 @@ object ItemsAdderManager {
         get() = BetterMinecraftCore.instance.server.pluginManager.getPlugin("ItemsAdder") != null
 
 
-    fun getListeners() : List<Listener> = listOf(
+    fun getListeners() : List<Listener> = if(isItemsAdderInstalled) listOf(
         ItemsAdderLoadListener(),
         ItemsAdderCustomBlockBreakListener()
-    )
+    ) else listOf()
 }

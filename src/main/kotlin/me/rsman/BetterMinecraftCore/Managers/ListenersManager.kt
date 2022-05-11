@@ -2,8 +2,6 @@ package me.rsman.BetterMinecraftCore.Managers
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Listeners.*
-import me.rsman.BetterMinecraftCore.Listeners.Enchantments.AimingListener
-import me.rsman.BetterMinecraftCore.Listeners.Enchantments.TelekinesisListener
 
 object ListenersManager {
     fun registerAllEvents() {
@@ -15,10 +13,10 @@ object ListenersManager {
             CraftingListener(),
             EnchantListener(),
             AnvilListener(),  //enchantments
-            AimingListener(),
-            TelekinesisListener(),  // Commands listener
+            ArrowShotListener(),
             CraftCommandListener(),
             GrindstoneListener(),
+            EntityKillListener()
         ) + ItemsAdderManager.getListeners() +
             MythicMobsManager.getListeners()
         for (listener in listeners) {
