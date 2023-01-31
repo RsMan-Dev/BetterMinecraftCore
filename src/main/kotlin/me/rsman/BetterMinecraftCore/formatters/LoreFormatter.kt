@@ -1,5 +1,6 @@
 package me.rsman.BetterMinecraftCore.formatters
 
+import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.enums.EEnchants
 import me.rsman.BetterMinecraftCore.enums.EAttributes
 import me.rsman.BetterMinecraftCore.configs.containers.GlobalConfigContainer
@@ -61,8 +62,8 @@ object LoreFormatter {
             }
             val enchantTrans = EnchantLangContainer.instance?.getTranslation(
                     EEnchants.fromKey(
-                            key.key.toString().replaceFirst("minecraft:".toRegex(), "")
-                    )?.key
+                            key.key.toString().replaceFirst("minecraft:", "")
+                    )?.key?.uppercase()
             ) ?: key.key.toString()
             val enchantName = GlobalConfigContainer.instance!!.enchant_display_format!!.replace("&", "§")
                     .replace("{ench_name}", enchantTrans.replace("&", "§"))

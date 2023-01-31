@@ -172,6 +172,7 @@ class BmcItem {
                 materialId = self.materialId
                 isUnbreakable = self.unbreakable ?: false
 
+                updateEnchantAttributes()
                 updateCustomLore()
                 self.dropsFromBlock?.forEach { addDropSource(it, EDropSourceType.BLOCK) }
                 self.dropsFromEntity?.forEach { addDropSource(it, EDropSourceType.ENTITY) }

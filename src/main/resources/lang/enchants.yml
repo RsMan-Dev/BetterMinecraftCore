@@ -1,7 +1,7 @@
 #ENCHANTMENT TRANSLATES (color codes are allowed)
 translations:
   #Vanilla enchants (some will be replaced by custom enchants)
-  AQUA_INFINITY: Aqua Affinity
+  AQUA_AFFINITY: Aqua Affinity
   BANE_OF_ARTHROPODS: Bane of Arthropods
   BLAST_PROTECTION: Blast Protection
   CHANNELING: Channeling
@@ -41,6 +41,6 @@ translations:
   LOOTING: Looting
 
   #Custom enchants
-  PROTECTION: Protection
-  TELEKINESIS: Telekinesis
-  AIMING: Aiming
+  BMC_PROTECTION: Protection
+  BMC_TELEKINESIS: Telekinesis
+  BMC_AIMING: Aiming

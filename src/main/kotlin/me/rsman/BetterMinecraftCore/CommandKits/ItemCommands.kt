@@ -58,7 +58,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        EnchantManager.addEnchantment(item, EEnchants.valueOf(ench!!).enchant, level)
+        EnchantManager.addEnchantment(item, EEnchants.fromKey(ench!!)?.enchant, level)
+        item.updateEnchantAttributes()
         item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_SET, "{ench}", ench, "{level}", level.toString() + "")
@@ -94,7 +95,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        EnchantManager.removeEnchantment(item, EEnchants.valueOf(ench!!).enchant)
+        EnchantManager.removeEnchantment(item, EEnchants.fromKey(ench!!)?.enchant)
+        item.updateEnchantAttributes()
         item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_REMOVE, "{ench}", ench)

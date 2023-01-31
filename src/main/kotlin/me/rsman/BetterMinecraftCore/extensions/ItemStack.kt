@@ -59,10 +59,9 @@ private fun ItemStack.setEnchAtribute(attr: EAttributes, value: Long) {
 }
 
 fun ItemStack.updateEnchantAttributes() {
-    this.enchantments.keys.filter {it.key.toString().startsWith(NamespacedKey.minecraft("bmc_").toString())}
-        .mapNotNull { EEnchants.fromKey(it.key.toString().replace("minecraft:", ""))?.enchant }
-        .filterIsInstance<CustomEnchantClass>()
-        .forEach { it.attributeModifiers.forEach { (k, v) -> this.setEnchAtribute(k, v)  } }
+    this.enchantments.entries.filter {it.key.key.toString().startsWith(NamespacedKey.minecraft("bmc_").toString())}
+        .mapNotNull { EEnchants.fromKey(it.key.key.toString().replace("minecraft:", ""))?.enchant?.let { it2 -> Pair(it2, it.value) } }
+        .forEach { if(it.first is CustomEnchantClass) (it.first as CustomEnchantClass).attributeModifiers.forEach { (k, v) -> this.setEnchAtribute(k, v * it.second)  } }
 }
 
 fun ItemStack.setCustomLoreLine(value: String, line: Int?) {
