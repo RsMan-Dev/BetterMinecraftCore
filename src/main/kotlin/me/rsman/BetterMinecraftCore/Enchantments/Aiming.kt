@@ -4,6 +4,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import me.rsman.BetterMinecraftCore.Managers.ItemTypeChecker
+import me.rsman.BetterMinecraftCore.enums.EAttributes
 import org.bukkit.enchantments.EnchantmentTarget
 
 class Aiming : CustomEnchantClass(NamespacedKey.minecraft("bmc_aiming")) {
@@ -51,12 +52,12 @@ class Aiming : CustomEnchantClass(NamespacedKey.minecraft("bmc_aiming")) {
         return attributeModifiers.isNotEmpty()
     }
 
-    override val attributeModifiers: Map<String, Long>
+    override val attributeModifiers: Map<EAttributes, Long>
         get() = _attributeModifiers
 
     companion object {
         private lateinit var _instance: Aiming
-        private var _attributeModifiers: Map<String, Long> = mapOf()
+        private var _attributeModifiers: Map<EAttributes, Long> = mapOf()
         val enchant: Aiming
             get() = if(this::_instance.isInitialized) _instance else {
                 _instance = Aiming(); _instance

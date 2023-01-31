@@ -3,9 +3,12 @@ package me.rsman.BetterMinecraftCore.Listeners
 import EMessages
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass
-import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import me.rsman.BetterMinecraftCore.configs.containers.MessagesLangContainer
-import me.rsman.BetterMinecraftCore.utils.NBT
+import me.rsman.BetterMinecraftCore.extensions.isRenamable
+import me.rsman.BetterMinecraftCore.extensions.saveName
+import me.rsman.BetterMinecraftCore.extensions.updateCustomLore
+import me.rsman.BetterMinecraftCore.utils.getNbt
+import me.rsman.BetterMinecraftCore.utils.setNbt
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,7 +18,6 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.AnvilInventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import org.bukkit.persistence.PersistentDataType
 import kotlin.math.pow
 
 class AnvilListener : Listener {
@@ -26,13 +28,13 @@ class AnvilListener : Listener {
         val secondItem = inventory.getItem(1)
         val secondItemMeta = secondItem?.itemMeta;
         var repairCost = 0
-        if (ItemManager.getItemName(firstItem) != "") {
+        if (firstItem?.saveName != null) {
             e.result = null
         }
         if(firstItem != null){
             val result = firstItem.clone()
             val resultMeta = result.itemMeta
-            if(inventory.renameText != resultMeta?.displayName?.replace("((§.)*)".toRegex(), "") && !ItemManager.isRenamable(firstItem)){
+            if(inventory.renameText != resultMeta?.displayName?.replace("((§.)*)".toRegex(), "") && !firstItem.isRenamable){
                 val res = ItemStack(Material.BARRIER, 1)
                 val meta = res.itemMeta
                 meta?.setDisplayName(
@@ -52,7 +54,7 @@ class AnvilListener : Listener {
             }
             if(firstItem.type != secondItem?.type
                 && !(
-                    ItemManager.getItemName(firstItem) == ItemManager.getItemName(secondItem)
+                    firstItem.saveName == secondItem?.saveName
                     || secondItem?.type == Material.ENCHANTED_BOOK
                 )
                 && secondItem != null
@@ -62,7 +64,7 @@ class AnvilListener : Listener {
                 return
             }
             if(resultMeta != null && secondItem != null){
-                repairCost = (2).toDouble().pow(NBT[firstItem, "repair-cost", PersistentDataType.INTEGER] ?: 0).toInt()
+                repairCost = (2).toDouble().pow(firstItem.getNbt("repair-cost") ?: 0).toInt()
                 for(enchEntry in secondItem.enchantments){
                     if(firstItem.enchantments.containsKey(enchEntry.key)){
                         if(enchEntry.value > firstItem.enchantments[enchEntry.key]!!){
@@ -86,7 +88,7 @@ class AnvilListener : Listener {
                 }
             }
             result.itemMeta = resultMeta
-            ItemManager.updateItemLore(result)
+            result.updateCustomLore()
             resultMeta?.lore = resultMeta?.lore?.plus(listOf("§c$repairCost lvl requis")) ?: listOf("§c$repairCost lvl requis")
             result.itemMeta = resultMeta
             e.result = result
@@ -106,9 +108,8 @@ class AnvilListener : Listener {
                 e.isCancelled = true
                 return
             } else {
-                NBT[e.currentItem!!, "repair-cost", PersistentDataType.INTEGER] =
-                        NBT[e.currentItem!!, "repair-cost", PersistentDataType.INTEGER]?.plus(1) ?: 1
-                ItemManager.updateItemLore(e.currentItem!!)
+                e.currentItem!!.setNbt("repair-cost", e.currentItem!!.getNbt<Int>("repair-cost")?.plus(1) ?: 1)
+                e.currentItem?.updateCustomLore()
             }
         }
     }

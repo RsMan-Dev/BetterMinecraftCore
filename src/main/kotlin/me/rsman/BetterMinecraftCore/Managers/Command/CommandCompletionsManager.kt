@@ -43,14 +43,14 @@ object CommandCompletionsManager {
         commandCompletions.registerAsyncCompletion("attribute") { c: BukkitCommandCompletionContext ->
             val sender = c.sender
             if (sender is Player) {
-                return@registerAsyncCompletion EAttributes.Companion.allKeys
+                return@registerAsyncCompletion EAttributes.keys
             }
             null
         }
         commandCompletions.registerAsyncCompletion("enchantment") { c: BukkitCommandCompletionContext ->
             val sender = c.sender
             if (sender is Player) {
-                return@registerAsyncCompletion EEnchants.Companion.nonReplacedEnumKeys
+                return@registerAsyncCompletion EEnchants.nonReplacedKeys
             }
             null
         }

@@ -2,6 +2,7 @@ package me.rsman.BetterMinecraftCore.Listeners
 
 import me.rsman.BetterMinecraftCore.Enchantments.Telekinesis
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.block.Container
@@ -18,7 +19,7 @@ class BlockListener : Listener{
         val inv = player.inventory
         val block = event.block
         val addedDrops = mutableListOf<ItemStack>()
-        ItemManager.blockLootTable["m." + event.block.type.name]?.forEach {
+        BmcItemContainer.blockLootTable["m." + event.block.type.name]?.forEach {
             val stack = it.second.itemStack
             stack.amount = if (it.first.minimum == it.first.maximum)
                 it.first.minimum

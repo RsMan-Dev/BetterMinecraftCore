@@ -4,6 +4,8 @@ import java.util.HashMap
 import me.rsman.BetterMinecraftCore.models.PlayerBaseAttr
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.enums.EAttributes
+import me.rsman.BetterMinecraftCore.extensions.getAtribute
+import me.rsman.BetterMinecraftCore.extensions.update
 import org.bukkit.entity.Player
 import java.sql.SQLException
 import org.bukkit.inventory.ItemStack
@@ -84,7 +86,7 @@ object PlayerManager {
             getBaseAttributes(uuid, true)
         }
         attributes = playersAttributes[uuid]
-        for (attr in EAttributes.allKeys) {
+        for (attr in EAttributes.keys) {
             returnAttributes[attr] = attributes!![attr + "_base"]!! + attributes[attr + "_equip"]!! + attributes[attr + "_skill"]!! + attributes[attr + "_talisman"]!!
         }
         return returnAttributes
@@ -105,15 +107,15 @@ object PlayerManager {
                     equipment.leggings,
                     equipment.boots)
             val finalAttributes: MutableMap<String, Long> = HashMap()
-            for (attr in EAttributes.allKeys) {
+            for (attr in EAttributes.keys) {
                 finalAttributes[attr] = 0L
             }
             for (item in items) {
                 if (item == null || item.type == Material.AIR || item.type == Material.WRITABLE_BOOK) continue
-                ItemManager.updateItem(item)
-                for (attr in EAttributes.allKeys) {
-                    val attrValue = ItemManager.getFinalItemAttr(item, attr)
-                    finalAttributes[attr] = finalAttributes[attr]!! + attrValue
+                item.update()
+                for (attr in EAttributes.values()) {
+                    val attrValue = item.getAtribute(attr)
+                    finalAttributes[attr.key] = finalAttributes[attr.key]!! + attrValue
                 }
             }
             setEquippedAttributes(player.uniqueId.toString(), finalAttributes)

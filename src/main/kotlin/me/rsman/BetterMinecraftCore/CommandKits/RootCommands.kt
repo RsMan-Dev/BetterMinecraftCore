@@ -30,7 +30,7 @@ class RootCommands : BaseCommand() {
     @Subcommand("reload")
     @CommandPermission("bmc.admin")
     @Description("{@@bmc.command.description.reload}")
-    fun onReload(playerSender: Player?) {
+    fun onReload() {
         ConfigLoader.init()
         BmcCraftContainer.registerCrafts()
         try {

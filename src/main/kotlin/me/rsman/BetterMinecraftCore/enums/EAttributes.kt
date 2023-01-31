@@ -2,7 +2,7 @@ package me.rsman.BetterMinecraftCore.enums
 
 import java.util.ArrayList
 
-enum class EAttributes {
+enum class EAttributes(val key: String, val isPercent: Boolean = false) {
     DAMAGE("damage"),
     STRENGTH("strength"),
     INTELLIGENCE("intelligence"),
@@ -14,35 +14,12 @@ enum class EAttributes {
     MANA("mana"),
     SPEED("speed", true);
 
-    val key: String
-    val isPercent: Boolean
-
-    constructor(key: String, percent: Boolean) {
-        this.key = key
-        isPercent = percent
-    }
-
-    constructor(key: String) {
-        this.key = key
-        isPercent = false
-    }
-
     companion object {
-        val allKeys: List<String>
-            get() {
-                val keys: MutableList<String> = ArrayList()
-                for (ea in values()) {
-                    keys.add(ea.key)
-                }
-                return keys
-            }
-        val allPercentKeys: List<String>
-            get() {
-                val keys: MutableList<String> = ArrayList()
-                for (ea in values()) {
-                    if (ea.isPercent) keys.add(ea.key)
-                }
-                return keys
-            }
+        val keys: List<String>
+            get() = values().toList().map { it.key }
+        val percentKeys: List<String>
+            get() = values().toList().filter { it.isPercent } .map { it.key }
+
+        fun fromKey(key: String) : EAttributes? = EAttributes.values().find { it.key == key }
     }
 }

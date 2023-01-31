@@ -4,6 +4,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import me.rsman.BetterMinecraftCore.Managers.ItemTypeChecker
+import me.rsman.BetterMinecraftCore.enums.EAttributes
 import org.bukkit.enchantments.EnchantmentTarget
 
 class Telekinesis : CustomEnchantClass(NamespacedKey.minecraft("bmc_telekinesis")) {
@@ -50,12 +51,12 @@ class Telekinesis : CustomEnchantClass(NamespacedKey.minecraft("bmc_telekinesis"
         return false
     }
 
-    override val attributeModifiers: Map<String, Long>
+    override val attributeModifiers: Map<EAttributes, Long>
         get() = _attributeModifiers
 
     companion object {
         private lateinit var _instance: Telekinesis
-        private val _attributeModifiers: Map<String, Long> = mapOf()
+        private val _attributeModifiers: Map<EAttributes, Long> = mapOf()
         val enchant: Telekinesis
             get() = if(this::_instance.isInitialized) _instance else {
                 _instance = Telekinesis(); _instance

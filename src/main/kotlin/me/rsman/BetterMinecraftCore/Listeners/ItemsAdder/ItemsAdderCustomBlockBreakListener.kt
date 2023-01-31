@@ -4,6 +4,7 @@ import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent
 import dev.lone.itemsadder.api.ItemsAdder
 import me.rsman.BetterMinecraftCore.Enchantments.Telekinesis
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.block.Container
@@ -19,7 +20,7 @@ class ItemsAdderCustomBlockBreakListener: Listener {
         val inv = player.inventory
         val block = event.block
         val addedDrops = mutableListOf<ItemStack>()
-        ItemManager.blockLootTable["ia." + event.namespacedID.split(":")[1]]?.forEach {
+        BmcItemContainer.blockLootTable["ia." + event.namespacedID.split(":")[1]]?.forEach {
             val stack = it.second.itemStack
             stack.amount = if (it.first.minimum == it.first.maximum)
                 it.first.minimum

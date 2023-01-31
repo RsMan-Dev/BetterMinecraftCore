@@ -10,7 +10,7 @@ class AttributeLangContainer {
 
     fun setTranslations(translations: MutableMap<String?, String?>) {
         for ((key) in translations) {
-            if (!EAttributes.allKeys.contains(key)) {
+            if (!EAttributes.keys.contains(key)) {
                 BetterMinecraftCore.instance.logger.info(key)
                 translations.remove(key)
             }

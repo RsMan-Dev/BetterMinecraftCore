@@ -1,12 +1,12 @@
 package me.rsman.BetterMinecraftCore
 
 import me.rsman.BetterMinecraftCore.Managers.*
-import org.bukkit.plugin.java.JavaPlugin
 import me.rsman.BetterMinecraftCore.configs.ConfigLoader
 import me.rsman.BetterMinecraftCore.configs.containers.BmcCraftContainer
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandCompletionsManager
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager
 import org.bukkit.entity.Player
+import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Level
 import java.util.logging.Logger
 

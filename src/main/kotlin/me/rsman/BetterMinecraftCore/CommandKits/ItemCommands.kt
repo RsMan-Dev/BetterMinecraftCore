@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package me.rsman.BetterMinecraftCore.CommandKits
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore.Companion.instance
@@ -9,17 +11,18 @@ import co.aikar.commands.annotation.Optional
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
-import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import me.rsman.BetterMinecraftCore.Managers.PlayerManager
 import me.rsman.BetterMinecraftCore.Managers.EnchantManager
 import me.rsman.BetterMinecraftCore.enums.EEnchants
-import org.bukkit.inventory.meta.ItemMeta
 import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import me.rsman.BetterMinecraftCore.configs.models.BmcItem
-import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager
 import me.rsman.BetterMinecraftCore.Managers.Command.Lang.MessageKeys
+import me.rsman.BetterMinecraftCore.enums.EAttributes
+import me.rsman.BetterMinecraftCore.enums.EDropSourceType
+import me.rsman.BetterMinecraftCore.extensions.*
 import java.util.*
+import kotlin.math.min
 
 @CommandAlias("bmc|betterminecraftcore")
 @Subcommand("item|i")
@@ -37,7 +40,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setItemAttr(item, attr ?: return , value.toLong())
+        item.setStoredAtribute(EAttributes.fromKey(attr!!)!!, value.toLong())
+        item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ATTRIBUTE_SET, "{attr}", attr, "{val}", value.toString() + "")
     }
@@ -55,6 +59,7 @@ class ItemCommands : BaseCommand() {
             return
         }
         EnchantManager.addEnchantment(item, EEnchants.valueOf(ench!!).enchant, level)
+        item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_SET, "{ench}", ench, "{level}", level.toString() + "")
     }
@@ -71,7 +76,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setItemAttr(item, attr ?: return , 0)
+        item.setStoredAtribute(EAttributes.fromKey(attr!!)!! , 0)
+        item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ATTRIBUTE_REMOVE, "{attr}", attr)
     }
@@ -89,6 +95,7 @@ class ItemCommands : BaseCommand() {
             return
         }
         EnchantManager.removeEnchantment(item, EEnchants.valueOf(ench!!).enchant)
+        item.updateCustomLore()
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_ENCHANTMENT_REMOVE, "{ench}", ench)
     }
@@ -139,15 +146,13 @@ class ItemCommands : BaseCommand() {
     @Description("{@@bmc.command.description.item.rev.set}")
     @Syntax("<rev>")
     fun onSetRev(playerSender: Player, rev: Int) {
-        var rev = rev
         val issuerSender: CommandIssuer = commandManager?.getCommandIssuer(playerSender) ?: return
         val item = playerSender.equipment?.itemInMainHand
         if (item?.type == Material.AIR || item?.itemMeta == null) {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        if (rev < 1) rev = 1
-        ItemManager.setItemRev(item, rev)
+        item.rev = if (rev < 1) 1 else rev
         issuerSender.sendInfo(MessageKeys.ITEM_REV_SET, "{id}", rev.toString() + "")
     }
 
@@ -166,13 +171,13 @@ class ItemCommands : BaseCommand() {
         val item = BmcItemContainer.instance?.items?.get(itemName)!!.itemStack
         val initNum = number
         do {
-            item.amount = Math.min(item.maxStackSize, number)
+            item.amount = min(item.maxStackSize, number)
             val notAdded: Map<Int, ItemStack> = playerSender.inventory.addItem(item.clone())
-            if (!notAdded.isEmpty()) {
+            if (notAdded.isNotEmpty()) {
                 issuerSender.sendError(MessageKeys.INVENTORY_FULL)
                 break
             }
-            number -= Math.min(item.maxStackSize, number)
+            number -= min(item.maxStackSize, number)
         } while (number > 0)
         PlayerManager.alterPlayerAttributesWithEquippedStuff(playerSender)
         issuerSender.sendInfo(MessageKeys.ITEM_GIVEN, "{item}", itemName, "{number}", initNum.toString() + "", "{player}", playerSender.displayName)
@@ -193,13 +198,13 @@ class ItemCommands : BaseCommand() {
         val item = BmcItemContainer.instance?.items?.get(itemName)!!.itemStack
         val initNum = number
         do {
-            item.amount = Math.min(item.maxStackSize, number)
+            item.amount = min(item.maxStackSize, number)
             val notAdded: Map<Int, ItemStack> = player.getPlayer().inventory.addItem(item.clone())
-            if (!notAdded.isEmpty()) {
+            if (notAdded.isNotEmpty()) {
                 issuerSender.sendError(MessageKeys.INVENTORY_FULL)
                 break
             }
-            number -= Math.min(item.maxStackSize, number)
+            number -= min(item.maxStackSize, number)
         } while (number > 0)
         PlayerManager.alterPlayerAttributesWithEquippedStuff(player.getPlayer())
         issuerSender.sendInfo(MessageKeys.ITEM_GIVEN, "{item}", itemName, "{number}", initNum.toString() + "", "{player}", player.getPlayer().displayName)
@@ -219,16 +224,15 @@ class ItemCommands : BaseCommand() {
             return
         }
         if (itemName == null) {
-            itemName = if (ItemManager.getItemName(item) == "") {
+            itemName = if (item.saveName == null) {
                 issuerSender.sendError(MessageKeys.ITEM_NEVER_SAVED)
                 return
             } else {
-                ItemManager.getItemName(item)
+                item.saveName
             }
         }
         if (itemName!!.matches("^[a-zA-Z]+(_[a-zA-Z]+)*$".toRegex())) {
-            ItemManager.setItemName(item, itemName)
-            ItemManager.getItemRev(item)
+            item.saveName = itemName
             BmcItemContainer.instance?.items?.set(itemName, BmcItem.parseItemStack(item))
             BmcItemContainer.save()
             issuerSender.sendInfo(MessageKeys.ITEM_SAVED, "{item}", itemName)
@@ -261,8 +265,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setCustomLore(item, text ?: return , line)
-        ItemManager.updateItemLore(item)
+        item.setCustomLoreLine(text ?: return, line)
+        item.updateCustomLore()
         issuerSender.sendInfo(MessageKeys.ITEM_LORE_SET, "{text}", text, "{line}", line.toString() + "")
     }
 
@@ -278,8 +282,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setCustomLore(item, text ?: return , null)
-        ItemManager.updateItemLore(item)
+        item.setCustomLoreLine(text ?: return, null)
+        item.updateCustomLore()
         issuerSender.sendInfo(MessageKeys.ITEM_LORE_SET, "{text}", text, "{line}", "n")
     }
 
@@ -295,8 +299,8 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setUnbreakable(item, state)
-        ItemManager.updateItemLore(item)
+        item.isUnbreakable = state
+        item.updateCustomLore()
         issuerSender.sendInfo(MessageKeys.ITEM_UNBREAKABLE_SET, "{state}", state.toString() + "")
     }
 
@@ -312,7 +316,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.setRenamable(item, state)
+        item.isRenamable = state
         issuerSender.sendInfo(MessageKeys.ITEM_RENAMABLE_SET, "{state}", state.toString() + "")
     }
 
@@ -336,7 +340,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.addDrop(item, "$blockPattern $minCount-$maxCount $chance", "block")
+        item.addDropSource("$blockPattern $minCount-$maxCount $chance", EDropSourceType.BLOCK)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_SET)
     }
 
@@ -352,7 +356,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.removeDrop(item, blockPattern, "block")
+        item.removeDropSource(blockPattern, EDropSourceType.BLOCK)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_REMOVED)
     }
 
@@ -368,7 +372,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.removeAllDrops(item, "block")
+        item.removeAllDropSources(EDropSourceType.BLOCK)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_REMOVED)
     }
 
@@ -384,7 +388,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", ItemManager.getDrops(item, "block")?.joinToString(",") ?: "null")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", item.getDropSources(EDropSourceType.BLOCK)?.joinToString(",") ?: "null")
     }
 
     @Subcommand("addDropEntitySource")
@@ -399,7 +403,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.addDrop(item, "$blockPattern $minCount-$maxCount $chance", "entity")
+        item.addDropSource("$blockPattern $minCount-$maxCount $chance", EDropSourceType.ENTITY)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_SET)
     }
 
@@ -415,7 +419,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.removeDrop(item, blockPattern, "entity")
+        item.removeDropSource(blockPattern, EDropSourceType.ENTITY)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCE_REMOVED)
     }
 
@@ -431,7 +435,7 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        ItemManager.removeAllDrops(item, "entity")
+        item.removeAllDropSources(EDropSourceType.ENTITY)
         issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_REMOVED)
     }
 
@@ -447,6 +451,6 @@ class ItemCommands : BaseCommand() {
             issuerSender.sendError(MessageKeys.NEED_HOLD_ITEM)
             return
         }
-        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", ItemManager.getDrops(item, "entity")?.joinToString(",") ?: "null")
+        issuerSender.sendInfo(MessageKeys.ITEM_DROP_SOURCES_GET, "{sources}", item.getDropSources(EDropSourceType.ENTITY)?.joinToString(",") ?: "null")
     }
 }

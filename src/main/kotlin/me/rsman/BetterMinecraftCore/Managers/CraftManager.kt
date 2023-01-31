@@ -12,6 +12,7 @@ import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import me.rsman.BetterMinecraftCore.Managers.Command.CommandManager
 import me.rsman.BetterMinecraftCore.Managers.Command.Lang.MessageKeys
+import me.rsman.BetterMinecraftCore.extensions.saveName
 import java.util.*
 
 object CraftManager {
@@ -103,7 +104,7 @@ object CraftManager {
             return
         } else {
             val resultItem = r.result
-            result = if (ItemManager.getItemName(resultItem) == "") "m." + resultItem.type.name.uppercase(Locale.ENGLISH) else ItemManager.getItemName(resultItem)
+            result = if (resultItem.saveName == null) "m." + resultItem.type.name.uppercase(Locale.ENGLISH) else resultItem.saveName
             resultCount = resultItem.amount
         }
         val cInv = Bukkit.createInventory(playerSender, InventoryType.DISPENSER, "Craft $nameKeyPair")

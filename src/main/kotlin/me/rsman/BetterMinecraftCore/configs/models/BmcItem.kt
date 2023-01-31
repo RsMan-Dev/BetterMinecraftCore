@@ -1,11 +1,15 @@
 package me.rsman.BetterMinecraftCore.configs.models
 
+import com.google.protobuf.MapEntry
 import java.util.HashMap
 import me.rsman.BetterMinecraftCore.enums.EAttributes
 import me.rsman.BetterMinecraftCore.enums.EEnchants
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.enums.EDropSourceType
+import me.rsman.BetterMinecraftCore.extensions.*
+import org.bukkit.material.MaterialData
 
 class BmcItem {
     private var name: String? = null
@@ -68,7 +72,7 @@ class BmcItem {
     fun setAttributes(attributes: HashMap<String, Long>?) {
         if (attributes != null) {
             for ((key) in attributes) {
-                if (!EAttributes.allKeys.contains(key)) {
+                if (!EAttributes.keys.contains(key)) {
                     attributes.remove(key)
                 }
             }
@@ -83,7 +87,7 @@ class BmcItem {
     fun setEnchants(enchants: HashMap<String, Int>?) {
         if (enchants != null) {
             for ((key) in enchants) {
-                if (!EEnchants.enumKeys.contains(key)) {
+                if (!EEnchants.keys.contains(key)) {
                     enchants.remove(key)
                 }
             }
@@ -147,62 +151,55 @@ class BmcItem {
 
     val itemStack: ItemStack
         get() {
-            val itemTR = ItemStack(Material.valueOf(material!!))
-            if (name != null) ItemManager.setItemName(itemTR, name!!)
-            if (lore != null && lore!!.isNotEmpty()) ItemManager.setCustomLoreAll(itemTR, lore!!)
-            if (attributes != null) {
-                for ((key, value) in attributes!!) {
-                    ItemManager.setItemAttr(itemTR, key, value)
+            val self = this;
+            return ItemStack(Material.valueOf(material!!)).apply {
+                saveName = self.name
+                customLore = self.lore
+                if (self.attributes != null) {
+                    for ((key, value) in self.attributes!!) {
+                        val ea = EAttributes.fromKey(key) ?: continue
+                        setStoredAtribute(ea, value)
+                    }
                 }
-            }
-            if (enchants != null) {
-                for ((key, value) in enchants!!) {
-                    itemTR.addUnsafeEnchantment(EEnchants.valueOf(key).enchant, value)
+                if (self.enchants != null) {
+                    for ((key, value) in self.enchants!!) {
+                        addUnsafeEnchantment(EEnchants.valueOf(key).enchant, value)
+                    }
                 }
+                isRenamable = self.renamable ?: false
+                rev = self.rev
+                displayName = self.displayName
+                materialId = self.materialId
+                isUnbreakable = self.unbreakable ?: false
+
+                updateCustomLore()
+                self.dropsFromBlock?.forEach { addDropSource(it, EDropSourceType.BLOCK) }
+                self.dropsFromEntity?.forEach { addDropSource(it, EDropSourceType.ENTITY) }
             }
-            if (renamable != null) ItemManager.setRenamable(itemTR, renamable!!)
-            if (renamable == null) ItemManager.setRenamable(itemTR, false)
-            ItemManager.setItemRev(itemTR, rev)
-            val itemTRMeta = itemTR.itemMeta
-            if (itemTRMeta != null) {
-                if (displayName != null) itemTRMeta.setDisplayName(displayName)
-                if (materialId != null) itemTRMeta.setCustomModelData(materialId)
-                if (unbreakable != null) itemTRMeta.isUnbreakable = unbreakable!!
-            }
-            itemTR.itemMeta = itemTRMeta
-            ItemManager.updateItemLore(itemTR)
-            dropsFromBlock?.forEach { ItemManager.addDrop(itemTR, it, "block") }
-            dropsFromEntity?.forEach { ItemManager.addDrop(itemTR, it, "entity") }
-            return itemTR
+
         }
 
     companion object {
         fun parseItemStack(item: ItemStack): BmcItem {
-            val im = item.itemMeta
-            val itemTS = BmcItem()
-            itemTS.material = item.type.name
-            if (ItemManager.getItemName(item) != "") itemTS.name = ItemManager.getItemName(item)
-            if (ItemManager.getCustomLoreAll(item).isNotEmpty()) itemTS.lore = ItemManager.getCustomLoreAll(item)
-            val itemAttrs = HashMap<String, Long>()
-            for (ea in EAttributes.values()) {
-                if (ItemManager.hasItemAttr(item, ea.key)) itemAttrs[ea.key] = ItemManager.getItemAttr(item, ea.key)
+            return BmcItem().apply {
+                material = item.type.name
+                name = item.saveName
+                lore = item.customLore
+                attributes = hashMapOf<String, Long>().apply { putAll( EAttributes.values().map { Pair(it.key, item.getStoredAtribute(it)) } ) }
+                enchants = hashMapOf<String, Int>().apply {
+                    putAll( item.enchantments
+                        .filter { EEnchants.fromKey(it.key.key.toString().replaceFirst("minecraft:", "")) != null }
+                        .map { Pair(EEnchants.fromKey(it.key.key.toString().replaceFirst("minecraft:", ""))!!.key, it.value) }
+                    )
+                }
+                renamable = item.isRenamable
+                displayName = item.displayName
+                materialId = item.materialId
+                unbreakable = item.isUnbreakable
+                rev = item.rev
+                dropsFromBlock = item.getDropSources(EDropSourceType.BLOCK)
+                dropsFromEntity = item.getDropSources(EDropSourceType.ENTITY)
             }
-            itemTS.attributes = itemAttrs
-            val itemEnchs = HashMap<String, Int>()
-            for ((key, value) in item.enchantments) {
-                itemEnchs[EEnchants.getEnumKeyFromKey(key.key.toString().replaceFirst("minecraft:", "")).toString()] = value
-            }
-            itemTS.enchants = itemEnchs
-            itemTS.renamable = if (ItemManager.isRenamable(item)) true else null
-            if (im != null) {
-                if (im.hasDisplayName()) itemTS.displayName = im.displayName
-                if (im.hasCustomModelData()) itemTS.materialId = im.customModelData
-                itemTS.unbreakable = if (im.isUnbreakable) true else null
-            }
-            itemTS.rev = ItemManager.getItemRev(item)
-            itemTS.dropsFromBlock = ItemManager.getDrops(item, "block")
-            itemTS.dropsFromEntity = ItemManager.getDrops(item, "entity")
-            return itemTS
         }
     }
 }

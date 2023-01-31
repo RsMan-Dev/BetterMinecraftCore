@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.InventoryCloseEvent
 import me.rsman.BetterMinecraftCore.configs.models.BmcShapedCraft
 import me.rsman.BetterMinecraftCore.configs.models.BmcShapelessCraft
+import me.rsman.BetterMinecraftCore.extensions.saveName
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import java.util.*
@@ -36,10 +37,10 @@ class CraftCommandListener : Listener {
             val itemName: String = if (item == null) {
                 "m.AIR"
             } else {
-                if (ItemManager.getItemName(item) == "") {
+                if (item.saveName == null) {
                     "m." + item.type
                 } else {
-                    ItemManager.getItemName(item)
+                    item.saveName!!
                 }
             }
             schemes[i / 3][i % 3] = itemName + if (item != null) " " + item.amount else ""

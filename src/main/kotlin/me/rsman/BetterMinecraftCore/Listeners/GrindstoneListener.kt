@@ -2,6 +2,7 @@ package me.rsman.BetterMinecraftCore.Listeners
 
 import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.extensions.updateCustomLore
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -15,7 +16,7 @@ class GrindstoneListener : Listener {
     fun onGrindstonePickResult(e: InventoryClickEvent){
         if(e.inventory is GrindstoneInventory && e.slotType != InventoryType.SlotType.RESULT){
             BetterMinecraftCore.instance.server.scheduler.runTaskLater(BetterMinecraftCore.instance, Runnable {
-                if(e.inventory.getItem(3) != null) ItemManager.updateItemLore(e.inventory.getItem(3)!!)
+                if(e.inventory.getItem(3) != null) e.inventory.getItem(3)?.updateCustomLore()
             }, 5)
         }
         if(e.inventory is GrindstoneInventory && e.slotType == InventoryType.SlotType.RESULT){
@@ -37,7 +38,7 @@ class GrindstoneListener : Listener {
                 }
             }
             result.itemMeta = resultMeta
-            ItemManager.updateItemLore(result)
+            result.updateCustomLore()
             e.currentItem = result
         }
     }

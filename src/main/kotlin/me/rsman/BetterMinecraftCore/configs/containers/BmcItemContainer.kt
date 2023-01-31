@@ -42,6 +42,7 @@ import java.util.ArrayList
 
 class BmcItemContainer {
     var items: HashMap<String, BmcItem?>? = null
+
     fun cloneForConfig(): BmcItemContainer {
         val ic = BmcItemContainer()
         val itemsClone = HashMap<String, BmcItem?>()
@@ -53,6 +54,9 @@ class BmcItemContainer {
     }
 
     companion object {
+        val blockLootTable = mutableMapOf<String, MutableList<Pair<ItemDropPattern, BmcItem>>>()
+        val entityLootTable = mutableMapOf<String, MutableList<Pair<ItemDropPattern, BmcItem>>>()
+
         @JvmStatic
         var instance: BmcItemContainer? = null
             private set
@@ -72,20 +76,20 @@ class BmcItemContainer {
                     item.getDropsFromBlock()?.forEach { d ->
                         val pat = ItemDropPattern.parsePattern(d)
                         if(pat != null){
-                            if(ItemManager.blockLootTable[pat.patternId] == null){
-                                ItemManager.blockLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
+                            if(blockLootTable[pat.patternId] == null){
+                                blockLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
                             } else {
-                                ItemManager.blockLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
+                                blockLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
                             }
                         }
                     }
                     item.getDropsFromEntity()?.forEach { d ->
                         val pat = ItemDropPattern.parsePattern(d)
                         if(pat != null){
-                            if(ItemManager.entityLootTable[pat.patternId] == null){
-                                ItemManager.entityLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
+                            if(entityLootTable[pat.patternId] == null){
+                                entityLootTable[pat.patternId] = mutableListOf(Pair(pat, item))
                             } else {
-                                ItemManager.entityLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
+                                entityLootTable[pat.patternId]?.plusAssign(Pair(pat, item))
                             }
                         }
                     }

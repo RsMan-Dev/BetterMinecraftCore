@@ -2,6 +2,7 @@ package me.rsman.BetterMinecraftCore.Listeners
 
 import me.rsman.BetterMinecraftCore.Enchantments.Telekinesis
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Arrow
@@ -19,7 +20,7 @@ class EntityKillListener: Listener {
     @EventHandler
     fun onEntityKill(event: EntityDeathEvent) {
         val addedDrops = mutableListOf<ItemStack>()
-        ItemManager.entityLootTable["m." + event.entityType.name]?.forEach {
+        BmcItemContainer.entityLootTable["m." + event.entityType.name]?.forEach {
             val stack = it.second.itemStack
             stack.amount = if (it.first.minimum == it.first.maximum)
                 it.first.minimum

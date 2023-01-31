@@ -44,7 +44,7 @@ class EnchantLangContainer {
 
     fun setTranslations(translations: MutableMap<String?, String?>) {
         for ((key) in translations) {
-            if (!EEnchants.enumKeys.contains(key)) {
+            if (!EEnchants.keys.contains(key)) {
                 translations.remove(key)
             }
         }

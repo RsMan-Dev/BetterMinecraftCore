@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment
 import me.rsman.BetterMinecraftCore.enums.EEnchants
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import me.rsman.BetterMinecraftCore.Enchantments.CustomEnchantClass
+import me.rsman.BetterMinecraftCore.extensions.updateCustomLore
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -47,6 +48,6 @@ class EnchantListener : Listener {
         for ((key, value) in e.enchantsToAdd) {
             e.item.addUnsafeEnchantment(key!!, value!!)
         }
-        ItemManager.updateItemLore(e.item)
+        e.item.updateCustomLore()
     }
 }

@@ -4,6 +4,7 @@ import io.lumine.mythic.bukkit.events.MythicMobDeathEvent
 import io.lumine.mythic.bukkit.events.MythicMobLootDropEvent
 import me.rsman.BetterMinecraftCore.Enchantments.Telekinesis
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
+import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Arrow
@@ -19,7 +20,7 @@ import kotlin.random.Random
 class MythicMobsMobKillDropListener: Listener {
     @EventHandler
     fun onEntityKill(event: MythicMobDeathEvent){
-        ItemManager.entityLootTable["mm." + event.mobType.internalName]?.forEach {
+        BmcItemContainer.entityLootTable["mm." + event.mobType.internalName]?.forEach {
             val stack = it.second.itemStack
             stack.amount = if (it.first.minimum == it.first.maximum)
                 it.first.minimum

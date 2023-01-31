@@ -2,6 +2,9 @@ package me.rsman.BetterMinecraftCore.utils
 
 import java.util.TreeMap
 
+val Int.romanString: String?
+    get() = RomanNumber.toRoman(this)
+
 object RomanNumber {
     private val map = TreeMap<Int, String>()
 

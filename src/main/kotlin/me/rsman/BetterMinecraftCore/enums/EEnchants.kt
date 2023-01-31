@@ -9,7 +9,7 @@ import org.bukkit.NamespacedKey
 import java.util.Arrays
 import java.util.ArrayList
 
-enum class EEnchants {
+enum class EEnchants(val key: String, val enchant: Enchantment, val replaces: List<EEnchants>? = null) {
     AQUA_INFINITY("aqua_affinity", Enchantment.WATER_WORKER),
     BANE_OF_ARTHROPODS("bane_of_arthropods", Enchantment.DAMAGE_ARTHROPODS),
     BLAST_PROTECTION("blast_protection", Enchantment.PROTECTION_EXPLOSIONS),
@@ -48,68 +48,26 @@ enum class EEnchants {
     UNBREAKING("unbreaking", Enchantment.DURABILITY),
     THORNS("thorns", Enchantment.THORNS),
     LOOTING("looting", Enchantment.LOOT_BONUS_MOBS),
-    PROTECTION("bmc_protection", Protection.enchant, arrayOf(BLAST_PROTECTION, OLD_PROTECTION, PROJECTILE_PROTECTION, FIRE_PROTECTION)),
+    PROTECTION("bmc_protection", Protection.enchant, listOf(BLAST_PROTECTION, OLD_PROTECTION, PROJECTILE_PROTECTION, FIRE_PROTECTION)),
     TELEKINESIS("bmc_telekinesis", Telekinesis.enchant),
     AIMING("bmc_aiming", Aiming.enchant);
-
-    val key: String
-    val enchant: Enchantment
-    val replaces: Array<EEnchants>
-
-    constructor(key: String, enchant: Enchantment, replaces: Array<EEnchants>) {
-        this.key = key
-        this.enchant = enchant
-        this.replaces = replaces
-    }
-
-    constructor(key: String, enchant: Enchantment) {
-        this.key = key
-        this.enchant = enchant
-        replaces = arrayOf()
-    }
 
     val minecraftKey: NamespacedKey
         get() = NamespacedKey.minecraft(key)
 
     companion object {
-        val enumKeys: List<String>
-            get() {
-                val keys: MutableList<String> = ArrayList()
-                for (ee in values()) {
-                    keys.add(ee.name)
-                }
-                return keys
-            }
-        val nonReplacedEnumKeys: List<String>
-            get() {
-                val keys: MutableList<String> = ArrayList()
-                val replaced: MutableList<EEnchants> = ArrayList()
-                for (ee in values()) {
-                    keys.add(ee.name)
-                    replaced.addAll(Arrays.asList(*ee.replaces))
-                }
-                for (ee in replaced) {
-                    keys.remove(ee.name)
-                }
-                return keys
-            }
+        val keys: List<String>
+            get() = values().toList().map { it.key }
+
+        val nonReplacedKeys: List<String>
+           get() = keys.toMutableList().apply { removeAll(values().mapNotNull { it.replaces }.flatten().map { it.key }) }
+
         private var replacesMap: HashMap<String, Enchantment?>? = null
         val replacesMapFromNamespaces: HashMap<String, Enchantment>
-            get() {
-                val map = HashMap<String, Enchantment>()
-                for (ee in values()) {
-                    for (ee2 in ee.replaces) {
-                        map[NamespacedKey.minecraft(ee2.key).toString()] = ee.enchant
-                    }
-                }
-                return map
+            get() = HashMap<String, Enchantment>().apply {
+                values().forEach { it.replaces?.forEach { it2 -> this[NamespacedKey.minecraft(it2.key).toString()] = it.enchant } }
             }
 
-        fun getEnumKeyFromKey(key: String): String? {
-            for (ee in values()) {
-                if (ee.key == key) return ee.name
-            }
-            return null
-        }
+        fun fromKey(key: String): EEnchants? = values().find { it.key == key }
     }
 }

@@ -3,6 +3,7 @@ package me.rsman.BetterMinecraftCore.Managers
 import java.util.HashMap
 import org.bukkit.enchantments.Enchantment
 import me.rsman.BetterMinecraftCore.enums.EEnchants
+import me.rsman.BetterMinecraftCore.extensions.updateCustomLore
 import org.bukkit.NamespacedKey
 import java.util.Arrays
 import org.bukkit.inventory.ItemStack
@@ -50,12 +51,12 @@ object EnchantManager {
 
     fun addEnchantment(item: ItemStack, enchantment: Enchantment?, level: Int) {
         item.addUnsafeEnchantment(enchantment!!, level)
-        ItemManager.updateItemLore(item)
+        item.updateCustomLore()
     }
 
     fun removeEnchantment(item: ItemStack, enchantment: Enchantment?) {
         item.removeEnchantment(enchantment!!)
-        ItemManager.updateItemLore(item)
+        item.updateCustomLore()
     }
 
     fun getEnchantmentLevel(item: ItemStack, enchantment: Enchantment?): Int? {
