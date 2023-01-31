@@ -1,5 +1,6 @@
 package me.rsman.BetterMinecraftCore.Listeners
 
+import me.rsman.BetterMinecraftCore.BetterMinecraftCore
 import me.rsman.BetterMinecraftCore.Enchantments.Telekinesis
 import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import me.rsman.BetterMinecraftCore.configs.containers.BmcItemContainer

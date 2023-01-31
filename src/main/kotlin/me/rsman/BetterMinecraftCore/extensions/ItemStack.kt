@@ -38,7 +38,7 @@ var ItemStack.displayName: String?
     set(value) {itemMeta = itemMeta?.apply { setDisplayName(value) } }
 
 var ItemStack.materialId: Int?
-    get() = itemMeta?.customModelData
+    get() = if (itemMeta?.hasCustomModelData() == true) itemMeta?.customModelData else null
     set(value) {itemMeta = itemMeta?.apply { setCustomModelData(value) } }
 
 var ItemStack.isRenamable: Boolean

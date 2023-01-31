@@ -1,15 +1,12 @@
 package me.rsman.BetterMinecraftCore.configs.models
 
-import com.google.protobuf.MapEntry
 import java.util.HashMap
 import me.rsman.BetterMinecraftCore.enums.EAttributes
 import me.rsman.BetterMinecraftCore.enums.EEnchants
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
-import me.rsman.BetterMinecraftCore.Managers.ItemManager
 import me.rsman.BetterMinecraftCore.enums.EDropSourceType
 import me.rsman.BetterMinecraftCore.extensions.*
-import org.bukkit.material.MaterialData
 
 class BmcItem {
     private var name: String? = null

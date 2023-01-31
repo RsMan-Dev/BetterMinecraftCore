@@ -18,7 +18,7 @@ inline fun <reified T: Any> ItemStack.setNbt(name: String, value: T)
     when (T::class) {
         String::class -> set(this, name, PersistentDataType.STRING, value as String)
 
-        Boolean::class -> set(this, name, PersistentDataType.SHORT, if (value as Boolean) 1 else 0)
+        Boolean::class -> set(this, name, PersistentDataType.BYTE, if (value as Boolean) 1.toByte() else 0.toByte())
 
         Byte::class -> set(this, name, PersistentDataType.BYTE, value as Byte)
         Short::class -> set(this, name, PersistentDataType.SHORT, value as Short)
@@ -47,7 +47,7 @@ inline fun <reified T: Any> ItemStack.getNbt(name: String) : T?
     return when (T::class) {
         String::class -> get(this, name, PersistentDataType.STRING) as T?
 
-        Boolean::class -> (get(this, name, PersistentDataType.SHORT) == 1.toShort()) as T?
+        Boolean::class -> (get(this, name, PersistentDataType.BYTE) == 1.toByte()) as T?
 
         Byte::class -> get(this, name, PersistentDataType.BYTE) as T?
         Short::class -> get(this, name, PersistentDataType.SHORT) as T?
