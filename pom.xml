@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.rsman</groupId>
+    <groupId>fr.rsman</groupId>
     <artifactId>BetterMinecraftCore</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -92,15 +92,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.spigotmc</pattern>
-                            <shadedPattern>me.rsman.BetterMinecraftCore</shadedPattern>
+                            <shadedPattern>fr.rsman.betterMinecraftCore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.j256.ormlite</pattern>
-                            <shadedPattern>me.rsman.BetterMinecraftCore</shadedPattern>
+                            <shadedPattern>fr.rsman.betterMinecraftCore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>co.aikar</pattern>
-                            <shadedPattern>me.rsman.BetterMinecraftCore</shadedPattern>
+                            <shadedPattern>fr.rsman.betterMinecraftCore</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -183,7 +183,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.24</version>
+            <version>8.0.32</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -206,7 +206,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.29</version>
+            <version>1.33</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

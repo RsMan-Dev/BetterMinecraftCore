@@ -1,6 +1,6 @@
 name: BetterMinecraftCore
 version: ${project.version}
-main: me.rsman.BetterMinecraftCore.BetterMinecraftCore
+main: fr.rsman.betterMinecraftCore.BetterMinecraftCore
 api-version: 1.16
 authors: [ RsMan ]
 description: test
