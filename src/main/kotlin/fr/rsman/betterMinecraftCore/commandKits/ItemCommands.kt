@@ -9,6 +9,7 @@ import co.aikar.commands.CommandIssuer
 import co.aikar.commands.annotation.*
 import co.aikar.commands.annotation.Optional
 import co.aikar.commands.bukkit.contexts.OnlinePlayer
+import fr.rsman.betterMinecraftCore.BetterMinecraftCore
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
 import fr.rsman.betterMinecraftCore.managers.PlayerManager
@@ -327,7 +328,7 @@ class ItemCommands : BaseCommand() {
     @CommandPermission("bmc.item.log")
     @Description("{@@bmc.command.description.item.log}")
     fun onLog(playerSender: Player) {
-        instance.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
+        BetterMinecraftCore.logger.info(Objects.requireNonNull(playerSender.equipment)!!.itemInMainHand.toString() + "")
     }
 
     @Subcommand("addDropBlockSource")

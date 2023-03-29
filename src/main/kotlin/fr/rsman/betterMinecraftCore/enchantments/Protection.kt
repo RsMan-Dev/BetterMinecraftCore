@@ -1,11 +1,16 @@
 package fr.rsman.betterMinecraftCore.enchantments
 
+import fr.rsman.betterMinecraftCore.configs.containers.EnchantLangContainer
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import fr.rsman.betterMinecraftCore.managers.ItemTypeChecker
 import fr.rsman.betterMinecraftCore.enums.EAttributes
+import io.papermc.paper.enchantments.EnchantmentRarity
+import net.kyori.adventure.text.Component
 import org.bukkit.enchantments.EnchantmentTarget
+import org.bukkit.entity.EntityCategory
+import org.bukkit.inventory.EquipmentSlot
 
 class Protection : CustomEnchantClass(NamespacedKey.minecraft("bmc_protection")) {
 
@@ -41,6 +46,30 @@ class Protection : CustomEnchantClass(NamespacedKey.minecraft("bmc_protection"))
         return true
     }
 
+    override fun displayName(p0: Int): Component {
+        return Component.text(EnchantLangContainer.instance?.translations?.get(name) ?: "")
+    }
+
+    override fun isTradeable(): Boolean {
+        return true
+    }
+
+    override fun isDiscoverable(): Boolean {
+        return true;
+    }
+
+    override fun getRarity(): EnchantmentRarity {
+        return EnchantmentRarity.COMMON
+    }
+
+    override fun getDamageIncrease(p0: Int, p1: EntityCategory): Float {
+        return 0.0F
+    }
+
+    override fun getActiveSlots(): MutableSet<EquipmentSlot> {
+        return EquipmentSlot.values().toMutableSet()
+    }
+
     override fun isApplicable(item: ItemStack): Boolean {
         return ItemTypeChecker.isArmorOrHead(item)
     }
@@ -50,6 +79,10 @@ class Protection : CustomEnchantClass(NamespacedKey.minecraft("bmc_protection"))
 
     override fun hasAttributesModifiers(): Boolean {
         return attributeModifiers.isNotEmpty()
+    }
+
+    override fun translationKey(): String {
+        return name;
     }
 
     override val attributeModifiers: Map<EAttributes, Long>

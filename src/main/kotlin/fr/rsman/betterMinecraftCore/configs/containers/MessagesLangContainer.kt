@@ -27,9 +27,9 @@ class MessagesLangContainer {
 
         fun load() {
             instance = null
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Loading Messages lang...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Loading Messages lang...")
             val messageLangContainerInstance = ConfigLoader.loadConfig("lang/messages", MessagesLangContainer::class.java)
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded Messages lang.")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded Messages lang.")
             instance = messageLangContainerInstance
         }
     }

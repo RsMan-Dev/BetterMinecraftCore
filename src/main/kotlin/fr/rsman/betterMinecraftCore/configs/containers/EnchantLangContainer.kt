@@ -13,9 +13,9 @@ data class EnchantLangContainer(
 
         fun load() {
             instance = null
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Loading Enchants lang...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Loading Enchants lang...")
             val enchantLangContainerInstance = ConfigLoader.loadConfig("lang/enchants", EnchantLangContainer::class.java)
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded Enchants lang.")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded Enchants lang.")
             instance = enchantLangContainerInstance
         }
     }

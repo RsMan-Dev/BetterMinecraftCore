@@ -8,7 +8,6 @@ data class BmcItemContainer(
     var items: MutableMap<String, BmcItem?>? = null
 ) {
 
-
     fun cloneForConfig(): BmcItemContainer {
         return this.copy(items = items?.mapValues { it.value?.cloneForConfig() }?.toMutableMap())
     }
@@ -23,10 +22,10 @@ data class BmcItemContainer(
 
         fun load() {
             instance = null
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Loading BMC items...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Loading BMC items...")
             val bmcItemContainerInstance = ConfigLoader.loadConfig("items/all", BmcItemContainer::class.java)
             if (bmcItemContainerInstance == null) {
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.severe("§4Items cannot be loaded")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.severe("§4Items cannot be loaded")
             } else {
                 val keys: MutableList<String> = mutableListOf()
                 for ((key, item) in bmcItemContainerInstance.items!!) {
@@ -45,20 +44,20 @@ data class BmcItemContainer(
                             ?: mutableListOf(Pair(pat, item))
                     }
                 }
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded §6" + keys.size + " §bitems.")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded §6" + keys.size + " §bitems.")
                 if (GlobalConfigContainer.instance?.isVerbose == true) {
-                    fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded items: §6$keys")
+                    fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded items: §6$keys")
                 }
             }
             instance = bmcItemContainerInstance
         }
 
         fun save() {
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Saving BMC items...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Saving BMC items...")
             val bmcItemsContainerClone = instance?.cloneForConfig()
-                ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.severe("§bBMC Items Instance not set.")
+                ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.severe("§bBMC Items Instance not set.")
             ConfigLoader.saveConfig("items/all", bmcItemsContainerClone)
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bSaved BMC items.")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bSaved BMC items.")
         }
     }
 }

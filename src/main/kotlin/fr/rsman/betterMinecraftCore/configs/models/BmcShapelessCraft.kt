@@ -1,5 +1,6 @@
 package fr.rsman.betterMinecraftCore.configs.models
 
+import fr.rsman.betterMinecraftCore.BetterMinecraftCore
 import fr.rsman.betterMinecraftCore.BetterMinecraftCore.Companion.instance
 import org.bukkit.inventory.RecipeChoice
 import org.bukkit.inventory.RecipeChoice.ExactChoice
@@ -16,16 +17,16 @@ data class BmcShapelessCraft(
 ) {
     fun registerCraft() {
         val resultItemFromScheme: Pair<Char, RecipeChoice?>? = BmcCraftSubContainer.convertSchemeToRecipeChoice(result, 'X')
-        resultItemFromScheme?.second ?: return instance.logger.warning("§cSkipping shapeless recipe §3$name $key§c, result is invalid or not registered")
+        resultItemFromScheme?.second ?: return BetterMinecraftCore.logger.warning("§cSkipping shapeless recipe §3$name $key§c, result is invalid or not registered")
 
         val rec: ShapelessRecipe = when (resultItemFromScheme.second){
             is MaterialChoice -> ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_" + name!!.lowercase() + "_" + key), (resultItemFromScheme.second as MaterialChoice?)!!.itemStack)
             else -> ShapelessRecipe(NamespacedKey.minecraft("bmc_shapeless_" + name!!.lowercase() + "_" + key), (resultItemFromScheme.second as ExactChoice?)!!.itemStack)
         }
 
-        for (ing in ingredients ?: return instance.logger.warning("§cSkipping shapeless recipe §3$name $key§c, ingredients not defined")) {
+        for (ing in ingredients ?: return BetterMinecraftCore.logger.warning("§cSkipping shapeless recipe §3$name $key§c, ingredients not defined")) {
             val itemFromSchemeRc: RecipeChoice = BmcCraftSubContainer.convertSchemeToRecipeChoice(ing, 'X')?.second
-                ?: return instance.logger.warning("§cskipping shapeless recipe §3$name $key§c, one ingredient is invalid or not registered")
+                ?: return BetterMinecraftCore.logger.warning("§cskipping shapeless recipe §3$name $key§c, one ingredient is invalid or not registered")
             rec.addIngredient(itemFromSchemeRc)
         }
         instance.server.addRecipe(rec)

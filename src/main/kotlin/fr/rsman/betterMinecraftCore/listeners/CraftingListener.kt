@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent
 import org.bukkit.inventory.CraftingInventory
 import fr.rsman.betterMinecraftCore.managers.CraftManager
 import fr.rsman.betterMinecraftCore.extensions.updateCustomLore
+import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.CraftItemEvent
 import org.bukkit.event.EventHandler
@@ -23,13 +24,13 @@ class CraftingListener : Listener {
     @EventHandler
     fun onCraftChange(e: PrepareItemCraftEvent) {
         val inv = e.inventory
-        val matrix = e.inventory.matrix
+        val matrix = e.inventory.matrix!!
         if(e.inventory.result != null) e.inventory.result!!.updateCustomLore()
         val ingredientMatrix: Array<ItemStack?>?
         if (e.recipe is ShapedRecipe) {
-            ingredientMatrix = CraftManager.convertIngredientMapToMatrix(inv.matrix, (Objects.requireNonNull(inv.recipe) as ShapedRecipe).ingredientMap)
+            ingredientMatrix = CraftManager.convertIngredientMapToMatrix(matrix, (Objects.requireNonNull(inv.recipe) as ShapedRecipe).ingredientMap)
         } else if (e.recipe is ShapelessRecipe) {
-            ingredientMatrix = CraftManager.convertIngredientListToMatrix(inv.matrix, (Objects.requireNonNull(inv.recipe) as ShapelessRecipe).ingredientList)
+            ingredientMatrix = CraftManager.convertIngredientListToMatrix(matrix, (Objects.requireNonNull(inv.recipe) as ShapelessRecipe).ingredientList)
             if (ingredientMatrix == null) {
                 e.inventory.result = null
                 return
@@ -87,13 +88,13 @@ class CraftingListener : Listener {
         if (e.currentItem != null && e.currentItem != inv.result) {
             return
         }
-        val newMatrix = inv.matrix
+        val newMatrix = inv.matrix!!
         val ingredientMatrix: Array<ItemStack?>?
         val result = Objects.requireNonNull(inv.result)!!.clone()
         if (e.recipe is ShapedRecipe) {
-            ingredientMatrix = CraftManager.convertIngredientMapToMatrix(inv.matrix, (Objects.requireNonNull(inv.recipe) as ShapedRecipe).ingredientMap)
+            ingredientMatrix = CraftManager.convertIngredientMapToMatrix(newMatrix, (Objects.requireNonNull(inv.recipe) as ShapedRecipe).ingredientMap)
         } else if (e.recipe is ShapelessRecipe) {
-            ingredientMatrix = CraftManager.convertIngredientListToMatrix(inv.matrix, (Objects.requireNonNull(inv.recipe) as ShapelessRecipe).ingredientList)
+            ingredientMatrix = CraftManager.convertIngredientListToMatrix(newMatrix, (Objects.requireNonNull(inv.recipe) as ShapelessRecipe).ingredientList)
             if (ingredientMatrix == null) {
                 e.isCancelled = true
                 return

@@ -43,7 +43,7 @@ data class BmcCraftSubContainer(
             val item = splitted[0]
             val number = if (splitted.size == 1) 1 else splitted[1].toInt()
             if (item == "m.AIR" || item == "AIR" || item == "null") {
-                out = Pair(' ', null)
+                out = Pair(character, null)
             } else if (item.startsWith("m.")) {
                 if (Material.matchMaterial(item.substring(2)) == null) return null
                 out = Pair(character, ExactChoice(ItemStack(Objects.requireNonNull(Material.matchMaterial(item.substring(2)))!!, number)))

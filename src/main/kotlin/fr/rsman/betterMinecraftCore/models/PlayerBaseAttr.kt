@@ -79,10 +79,10 @@ class PlayerBaseAttr {
             field.setLong(this, value)
             this
         } catch (e: NoSuchFieldException) {
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("trying to set $attrName attribute, but does not exists")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("trying to set $attrName attribute, but does not exists")
             this
         } catch (e: IllegalAccessException) {
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("trying to set $attrName attribute, but does not exists")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("trying to set $attrName attribute, but does not exists")
             this
         }
     }

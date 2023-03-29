@@ -1,7 +1,10 @@
 package fr.rsman.betterMinecraftCore.configs.containers
 
+import fr.rsman.betterMinecraftCore.BetterMinecraftCore
 import fr.rsman.betterMinecraftCore.configs.models.BmcCraftSubContainer
 import fr.rsman.betterMinecraftCore.configs.ConfigLoader
+import org.bukkit.Bukkit
+import org.bukkit.inventory.ShapedRecipe
 
 data class BmcCraftContainer(
     var recipes: MutableMap<String?, BmcCraftSubContainer> = mutableMapOf(),
@@ -27,10 +30,10 @@ data class BmcCraftContainer(
         @JvmStatic
         fun load() {
             instance = null
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Loading BMC crafts...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Loading BMC crafts...")
             val bmcCraftContainerInstance =
                 ConfigLoader.loadConfig("crafts/all", BmcCraftContainer::class.java)
-                    ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.severe("§4Crafts cannot be loaded")
+                    ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.severe("§4Crafts cannot be loaded")
 
             shapedKeys.clear()
             shapelessKeys.clear()
@@ -46,26 +49,26 @@ data class BmcCraftContainer(
                     shapelessKeys.add("$name.$key")
                 }
             }
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded §6" + getKeys().size + " §bcrafts.")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded §6" + getKeys().size + " §bcrafts.")
             if (GlobalConfigContainer.instance?.isVerbose == true) {
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded crafts: §6${getKeys()}")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded crafts: §6${getKeys()}")
             }
             instance = bmcCraftContainerInstance
         }
 
         fun save() {
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Saving BMC crafts...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Saving BMC crafts...")
             val bmcCraftContainerClone = instance?.cloneForConfig()
-                ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.severe("§bBMC Crafts Instance not set.")
+                ?: return fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.severe("§bBMC Crafts Instance not set.")
             ConfigLoader.saveConfig("crafts/all", bmcCraftContainerClone)
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bSaved BMC crafts.")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bSaved BMC crafts.")
         }
 
         @JvmStatic
         fun registerCrafts() {
             fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.server.resetRecipes()
             if (GlobalConfigContainer.instance?.isVerbose == true) {
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info { instance.toString() }
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info { instance.toString() }
             }
             for ((_, value) in instance!!.recipes) {
                 for ((_, value1) in value.shaped) {
@@ -73,6 +76,16 @@ data class BmcCraftContainer(
                 }
                 for ((_, value1) in value.shapeless) {
                     value1!!.registerCraft()
+                }
+            }
+            Bukkit.recipeIterator().forEach {
+                if (it is ShapedRecipe && it.key.toString() == "minecraft:diamond_helmet") {
+                    BetterMinecraftCore.logger.info(it.shape.toList().toString())
+                    BetterMinecraftCore.logger.info(it.choiceMap.toString())
+                }
+                if (it is ShapedRecipe && it.key.toString().startsWith("minecraft:bmc_")) {
+                    BetterMinecraftCore.logger.info(it.shape.toList().toString())
+                    BetterMinecraftCore.logger.info(it.choiceMap.toString())
                 }
             }
         }

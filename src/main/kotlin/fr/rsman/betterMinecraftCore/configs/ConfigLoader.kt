@@ -1,5 +1,6 @@
 package fr.rsman.betterMinecraftCore.configs
 
+import fr.rsman.betterMinecraftCore.BetterMinecraftCore
 import fr.rsman.betterMinecraftCore.BetterMinecraftCore.Companion.instance
 import fr.rsman.betterMinecraftCore.configs.containers.*
 import fr.rsman.betterMinecraftCore.configs.containers.GlobalConfigContainer
@@ -28,7 +29,7 @@ object ConfigLoader {
 
     fun <T> loadConfig(configFile: String, tClass: Class<T>?): T? {
         return try {
-            val yaml = Yaml(CustomClassLoaderConstructor(ConfigLoader::class.java.classLoader), representer)
+            val yaml = Yaml(CustomClassLoaderConstructor(ConfigLoader::class.java.classLoader), representer.apply { addClassTag(tClass, Tag.MAP) })
             val file = getFile(configFile)
             val fileInputStream = FileInputStream(file)
             yaml.loadAs(fileInputStream, tClass)
@@ -54,7 +55,7 @@ object ConfigLoader {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        instance.logger.info(representer.propertyUtils.isSkipMissingProperties.toString())
+        BetterMinecraftCore.logger.info(representer.propertyUtils.isSkipMissingProperties.toString())
     }
 
     private val representer: Representer

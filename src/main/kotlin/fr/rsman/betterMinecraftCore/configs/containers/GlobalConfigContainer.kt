@@ -25,13 +25,13 @@ data class GlobalConfigContainer(
 
         fun load() {
             instance = null
-            fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§3Loading BMC config...")
+            fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§3Loading BMC config...")
             val globalConfigContainerInstance = ConfigLoader.loadConfig("global", GlobalConfigContainer::class.java)
             if (globalConfigContainerInstance == null) {
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.severe("§4Config cannot be loaded")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.severe("§4Config cannot be loaded")
             } else {
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bLoaded global config.")
-                fr.rsman.betterMinecraftCore.BetterMinecraftCore.instance.logger.info("§bverbose mode §6" + if (globalConfigContainerInstance.isVerbose) "on" else "off")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bLoaded global config.")
+                fr.rsman.betterMinecraftCore.BetterMinecraftCore.logger.info("§bverbose mode §6" + if (globalConfigContainerInstance.isVerbose) "on" else "off")
             }
             instance = globalConfigContainerInstance
         }

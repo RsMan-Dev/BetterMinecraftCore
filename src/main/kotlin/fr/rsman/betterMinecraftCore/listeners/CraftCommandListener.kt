@@ -31,8 +31,8 @@ class CraftCommandListener : Listener {
         val inv = event.inventory
         if (inv.type != InventoryType.DISPENSER) return
         var i = 0
-        val schemes = Array(3) { arrayOfNulls<String>(3) }
-        for (item in inv.storageContents) {
+        val schemes = mutableListOf(mutableListOf("","",""),mutableListOf("","",""),mutableListOf("","",""))
+        for (item in inv.storageContents!!) {
             val itemName: String = if (item == null) {
                 "m.AIR"
             } else {
@@ -58,12 +58,12 @@ class CraftCommandListener : Listener {
             val schemesFormatted: MutableList<String> = ArrayList()
             i = 0
             while (i < 9) {
-                if (schemes[i / 3][i % 3] != null && schemes[i / 3][i % 3] != "m.AIR")
-                    schemesFormatted.add(schemes[i / 3][i % 3]!!)
+                if (schemes[i / 3][i % 3] != "m.AIR")
+                    schemesFormatted.add(schemes[i / 3][i % 3])
                 i++
             }
             val bmcCraft = BmcShapelessCraft()
-            bmcCraft.ingredients = schemesFormatted
+            bmcCraft.ingredients = schemesFormatted.filter { it != "" }.map { it.replace(Regex("(?:\\| m\\.AIR |\\| m\\.AIR)+$"), "") }
             bmcCraft.result = "$result $resultCount"
             bmcCraft.name = name
             bmcCraft.key = key
